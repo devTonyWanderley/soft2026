@@ -1,13 +1,13 @@
 //  Está lendo os pontos sem fazer nenhum tratamento
 //  Ancorar aqui pra fazer a linha no modelo padrão e exportar
+//  Jogar para o banco, rotinas de uso geral, inclusive parametrizar o importar e exportar
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#define IDIR "C:\\2026\\Soft\\Inst\\"
+//#define IDIR "C:\\2026\\Soft\\Inst\\"
 
 #include <QMainWindow>
-#include <QFile>
-#include <QFileDialog>
+#include "../Banco/geral.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class MainWindow;}
@@ -27,11 +27,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QString Buffer;
-
-    bool Importar(QString dir, QString filtro, QString titulo);
-    bool Importar(QString filtro, QString titulo);
-    bool Exportar(QString dir, QString filtro, QString titulo);
-    bool Exportar(QString filtro, QString titulo);
 
     bool RemoveEsquerda(QString &arg, const QString bnd);
     bool SeparaEntities();

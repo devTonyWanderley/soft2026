@@ -11,6 +11,8 @@ qt_add_executable(mdLerPntLeica
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
+    ../Banco/geral.h
+    ../Banco/geral.cpp
 )
 
 target_link_libraries(mdLerPntLeica

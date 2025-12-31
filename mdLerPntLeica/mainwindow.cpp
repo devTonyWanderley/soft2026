@@ -6,42 +6,6 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWin
     ui->setupUi(this);
 }
 
-bool MainWindow::Importar(QString dir, QString filtro, QString titulo)
-{
-    QString id = QFileDialog::getOpenFileName(nullptr, titulo, dir, filtro);
-    if(id == "") return false;
-    QFile arq;
-    arq.setFileName(id);
-    if(!arq.open(QFile::ReadOnly | QFile::Text))return false;
-    Buffer.clear();
-    Buffer = arq.readAll();
-    arq.close();
-    return true;
-}
-
-bool MainWindow::Importar(QString filtro, QString titulo)
-{
-    return Importar(IDIR, filtro, titulo);
-}
-
-bool MainWindow::Exportar(QString dir, QString filtro, QString titulo)
-{
-    QString id = QFileDialog::getSaveFileName(nullptr, titulo, dir, filtro);
-    if(id == "") return false;
-    QFile arq;
-    arq.setFileName(id);
-    if(!arq.open(QFile::WriteOnly | QFile::Text))return false;
-    QTextStream out(&arq);
-    out << Buffer;
-    arq.close();
-    return true;
-}
-
-bool MainWindow::Exportar(QString filtro, QString titulo)
-{
-    return Exportar(IDIR, filtro, titulo);
-}
-
 bool MainWindow::RemoveEsquerda(QString &arg, const QString bnd)
 {
     if(arg.indexOf(bnd) == -1) return false;
@@ -62,14 +26,17 @@ bool MainWindow::LerProxPonto(QString &id, QString &atr, QString &x, QString &y,
     RemoveEsquerda(Buffer, "CODE");
     RemoveEsquerda(Buffer, "\n1\n");
     atr = Buffer.left(Buffer.indexOf('\n'));
+    atr = fillEsquerda(atr, ' ', 8);
 
     RemoveEsquerda(Buffer, "PT_ID");
     RemoveEsquerda(Buffer, "\n1\n");
     id = Buffer.left(Buffer.indexOf('\n'));
+    id = fillEsquerda(id, ' ', 8);
 
     RemoveEsquerda(Buffer, "HEIGHT");
     RemoveEsquerda(Buffer, "\n1\n");
     z = Buffer.left(Buffer.indexOf('\n'));
+    z = fillNumero(z, 4, 3);
 
     RemoveEsquerda(Buffer, "CO_ORDS");
     RemoveEsquerda(Buffer, "\n1\n");
@@ -79,26 +46,22 @@ bool MainWindow::LerProxPonto(QString &id, QString &atr, QString &x, QString &y,
     x = y.left(y.indexOf(' '));
     y = y.right(y.length() - y.indexOf(' '));
 
-    while(*y.data() == ' ') y = y.right(y.length() - 1);
+    x = fillNumero(x, 6, 3);
+    y = fillNumero(y, 7, 3);
     return true;
 }
 
 void MainWindow::on_pushButton_clicked()
 {
-    if(!Importar("dxf (*.dxf)", "Ler pontos do dxf")) return;
+    if(!Importa(Buffer, "dxf (*.dxf)", "Ler pontos do dxf")) return;
     if(!SeparaEntities()) return;
-    QString id, atr, x, y, z;
+    QString id, atr, x, y, z, buf = "";
     while(LerProxPonto(id, atr, x, y, z))
-        qDebug()
-            << id
-            << '\t'
-            << atr
-            << '\t'
-            << x
-            << '\t'
-            << y
-            << '\t'
-            << z;
+    {
+        if(buf.length()) buf += '\n';
+        buf += (id + atr + x + y + z);
+    }
+    Exporta(buf,"pnt (*.pnt)", "Salvar pontos pnt");
 }
 
 MainWindow::~MainWindow()
