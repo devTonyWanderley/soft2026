@@ -24,3 +24,10 @@
 		1.2.6	fazer e exportar desenhos finais	->C++
 		1.2.7	importar desenhos finais	->Lisp
 		1.2.8	acabementos finais do desenho	->AutoCad
+
+2.0	Fluxo de trabalho do desenvolvedor
+	2.1	atender funcionalidade descrita em 1.1.1 .. para tanto:
+		-	criar pasta de instâncias
+		-	copiar a instância de trabalho para esta pasta
+		-	elaborar modelo identificado .. demais notas no corpo do programa
+		*	nome do arquivo modelo: mdLerPntLeica
