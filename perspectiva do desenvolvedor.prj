@@ -1,0 +1,13 @@
+
+
+2.0	Fluxo de trabalho do desenvolvedor
+	2.1	atender funcionalidade descrita em 1.1.1, para tanto:
+		-	criar pasta de instâncias
+		-	copiar a instância de trabalho para esta pasta
+		-	elaborar modelo identificado .. demais notas no corpo do programa
+		*	nome do arquivo modelo: mdLerPntLeica
+	2.2	revisar e dividir o lisp
+		-	criar pasta de lsp
+		-	criar arquivo principal
+		-	criar demais arquivos
+		-	separar o presente arquivo de forma a melhorar a legibilidade
