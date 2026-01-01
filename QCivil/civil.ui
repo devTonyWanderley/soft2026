@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Civil</class>
+ <widget class="QMainWindow" name="Civil">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Civil</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuImporta">
+    <property name="title">
+     <string>Importa</string>
+    </property>
+    <widget class="QMenu" name="menuSerial">
+     <property name="title">
+      <string>Serial</string>
+     </property>
+     <addaction name="actionLeica"/>
+     <addaction name="actionGD5"/>
+    </widget>
+    <addaction name="menuSerial"/>
+    <addaction name="actionDxf_leica"/>
+    <addaction name="actionPnt"/>
+    <addaction name="actionArs"/>
+    <addaction name="actionSup"/>
+    <addaction name="actionTrh"/>
+   </widget>
+   <addaction name="menuImporta"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionDxf_leica">
+   <property name="text">
+    <string>Dxf leica</string>
+   </property>
+  </action>
+  <action name="actionLeica">
+   <property name="text">
+    <string>Leica</string>
+   </property>
+  </action>
+  <action name="actionGD5">
+   <property name="text">
+    <string>GD5</string>
+   </property>
+  </action>
+  <action name="actionPnt">
+   <property name="text">
+    <string>Pnt</string>
+   </property>
+  </action>
+  <action name="actionArs">
+   <property name="text">
+    <string>Ars</string>
+   </property>
+  </action>
+  <action name="actionSup">
+   <property name="text">
+    <string>Sup</string>
+   </property>
+  </action>
+  <action name="actionTrh">
+   <property name="text">
+    <string>Trh</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

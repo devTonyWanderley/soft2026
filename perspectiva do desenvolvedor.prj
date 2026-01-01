@@ -10,4 +10,43 @@
 		-	criar pasta de lsp
 		-	criar arquivo principal
 		-	criar demais arquivos
-		-	separar o presente arquivo de forma a melhorar a legibilidade
+*resolvido até 1.1.2
+		-	verificar 1.1.3 (fazer a malha da primitiva no desenho auxiliar)
+*verificado
+*lisp aparentemente ok
+	2.3	refazer o c++ até o ponto do tp1, com a mudança de paradigma .. usar geral.h & geral.cpp
+	
+	Esboço da interface em cpp:
+	->	operações realizadas no c++:
+		1.1.1	ler pontos do dxf importados da estação total Leica e gerar o pnt									[importar]
+		1.1.5	importar malha com seus pontos																		[importar]
+		1.1.6	gerar e exportar superfície primitiva com seu contorno												[processar] & [exportar]
+		1.2.3	importar superfície primitiva e esboço do traçado													[importar]
+		1.2.4	criar detalhamento do(s) traçado(s) em planta, perfil e seções da superfície primitiva				[processar]
+		1.2.5	exportar detalhamento para o terceiro desenho auxiliar												[exportar]
+		1.3.3	importar greide																						[importar]
+		1.3.4	loop de análise e ajustes finais do projeto:
+			1.3.4.1	calcular volumes, corte e aterro máximos														[processar]
+			1.3.4.2	eventualmente alterar elementos do greide e retornar ao passo imediatamente anterior			[processar]
+		1.3.5	calcular elementos pertinetes do projeto - momentos de transporte por exemplo						[processar]
+		1.3.6	fazer e exportar desenhos finais																	[processar] & [exportar]
+	
+	importar:
+		[1.1.1]	pontos do dxf leica
+		[1.1.5]	esboço do levantamento (arestas + pontos)
+		[1.2.3]	primitiva (malha + traçado horizontal + pontos)
+		[1.3.3]	greide
+	
+	processar:
+		[1.1.6]	gerar primitiva
+		[1.2.4]	detalhar primitiva
+		[1.3.4]	loop de ajustes finos
+		[1.3.5]	cálculos finais
+		[1.3.6]	detalhamento final
+	
+	exportar:
+		[1.1.6]	primitiva
+		[1.2.5]	perfil e seções da primitiva
+		[1.3.6]	detalhamento final
+		
+				!!!		Acrescentar leitura serial		!!!
