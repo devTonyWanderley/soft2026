@@ -50,6 +50,9 @@
     <property name="title">
      <string>Exporta</string>
     </property>
+    <addaction name="actionPnt_2"/>
+    <addaction name="actionSup_2"/>
+    <addaction name="actionCon"/>
    </widget>
    <addaction name="menuImporta"/>
    <addaction name="menuProcessa"/>
@@ -89,6 +92,21 @@
   <action name="actionTrh">
    <property name="text">
     <string>Trh</string>
+   </property>
+  </action>
+  <action name="actionPnt_2">
+   <property name="text">
+    <string>Pnt</string>
+   </property>
+  </action>
+  <action name="actionSup_2">
+   <property name="text">
+    <string>Sup</string>
+   </property>
+  </action>
+  <action name="actionCon">
+   <property name="text">
+    <string>Con</string>
    </property>
   </action>
  </widget>

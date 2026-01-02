@@ -18,6 +18,8 @@ qt_add_executable(QCivil
     ../Banco/tipos/ecivil.cpp ../Banco/tipos/ecivil.h
     ../Banco/tipos/ponto.cpp ../Banco/tipos/ponto.h
     ../Banco/forms/comserial.h ../Banco/forms/comserial.ui ../Banco/forms/comserial.cpp
+    ../Banco/DxfLeica.h
+    ../Banco/DxfLeica.cpp
 )
 
 qt_add_translations(

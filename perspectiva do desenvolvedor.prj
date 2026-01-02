@@ -45,9 +45,13 @@
 		[1.3.6]	detalhamento final
 	
 	exportar:
-		[1.1.6]	primitiva
+		[1.1.6]	primitiva (pnt, sup, con)
 		[1.2.5]	perfil e seções da primitiva
 		[1.3.6]	detalhamento final
 		
 				!!!		Acrescentar leitura serial		!!!
 	baud rate, porta, pb abrir porta, status
+	
+Diante de bug que faz o guardapontos funcionar em umas situações e não em outras,
+aproveita-se para reformar estruturas de processamento.
+ancorar neste ponto.

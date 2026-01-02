@@ -50,8 +50,10 @@ bool Importa(QString &buf, QString dir, QString filtro, QString titulo)
     QFile arq;
     arq.setFileName(id);
     if(!arq.open(QFile::ReadOnly | QFile::Text))return false;
-    buf.clear();
-    buf = arq.readAll();
+    QByteArray qba = arq.readAll();
+    //buf.clear();
+    buf = QString::fromUtf8(qba);
+    //buf = arq.readAll();
     arq.close();
     return true;
 }
