@@ -17,7 +17,7 @@ qt_add_executable(QCivil
     ../Banco/tipos/face.cpp ../Banco/tipos/face.h
     ../Banco/tipos/ecivil.cpp ../Banco/tipos/ecivil.h
     ../Banco/tipos/ponto.cpp ../Banco/tipos/ponto.h
-    ../Banco/forms/serial.cpp ../Banco/forms/serial.h ../Banco/forms/serial.ui
+    ../Banco/forms/comserial.h ../Banco/forms/comserial.ui ../Banco/forms/comserial.cpp
 )
 
 qt_add_translations(

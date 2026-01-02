@@ -41,7 +41,19 @@
     <addaction name="actionSup"/>
     <addaction name="actionTrh"/>
    </widget>
+   <widget class="QMenu" name="menuProcessa">
+    <property name="title">
+     <string>Processa</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuExporta">
+    <property name="title">
+     <string>Exporta</string>
+    </property>
+   </widget>
    <addaction name="menuImporta"/>
+   <addaction name="menuProcessa"/>
+   <addaction name="menuExporta"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionDxf_leica">

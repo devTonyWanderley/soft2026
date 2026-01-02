@@ -9,52 +9,53 @@ Civil::Civil(QWidget *parent): QMainWindow(parent), ui(new Ui::Civil)
 void Civil::on_actionLeica_triggered()
 {
     qDebug()
-        << "Serial leica";
-    cs = new Serial;
-    cs->setWindowTitle("Leica");
-    cs->Buf = &Buffer;
+        << "Importar serial leica .. a implementar";
+    cs = new ComSerial(this);
+    cs->setWindowTitle("Comunicação serial com estação Leica");
+    cs->Buf = &QbaBuf;
     cs->show();
 }
 
 void Civil::on_actionGD5_triggered()
 {
     qDebug()
-        << "Serial GD5";
-    cs = new Serial;
-    cs->setWindowTitle("Geodetic GD5");
-    cs->Buf = &Buffer;
+        << "Importar serial GD5 .. a implementar";
+    cs = new ComSerial(this);
+    cs->setWindowTitle("Comunicação serial com estação Geodetic GD5");
+    cs->Buf = &QbaBuf;
     cs->show();
 }
 
 void Civil::on_actionDxf_leica_triggered()
 {
     qDebug()
-        << "Dxf leica";
+        << "Importar dxf leica .. a implementar";
 }
 
 void Civil::on_actionPnt_triggered()
 {
     qDebug()
-        << Buffer
-        << " Pnt";
+        << "Importar pnt .. a implementar";
+    qDebug()
+        << QbaBuf;
 }
 
 void Civil::on_actionArs_triggered()
 {
     qDebug()
-        << "Ars";
+        << "Importar ars .. a implementar";
 }
 
 void Civil::on_actionSup_triggered()
 {
     qDebug()
-        << "Sup";
+        << "Importar sup .. a implementar";
 }
 
 void Civil::on_actionTrh_triggered()
 {
     qDebug()
-        << "Trh = traçado horizontal";
+        << "Importar trh = traçado horizontal .. a implementar";
 }
 
 Civil::~Civil()
