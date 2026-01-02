@@ -1,0 +1,318 @@
+GERAL_H
+QString fillEsquerda(QString tx, QChar c, uint n);
+QString fillDireita(QString tx, QChar c, uint n);
+QString fillNumero(QString tx, uint ni, uint nf);
+bool Importa(QString &buf, QString dir, QString filtro, QString titulo);
+bool Importa(QString &buf, QString filtro, QString titulo);
+bool Exporta(QString &buf, QString dir, QString filtro, QString titulo);
+bool Exporta(QString &buf, QString filtro, QString titulo);
+......................................................................................
+DXFLEICA_H
+bool RemoveEsquerda(QString &arg, const QString bnd);
+bool SeparaEntities(QString &arg);
+bool LerProxPonto(QString &arg, QString &id, QString &atr, QString &x, QString &y, QString &z);
+......................................................................................
+ECIVIL_H
+    QString NormaTexto(QString arg);
+    QString FillPreTexto(QString tx, QChar c, uint n);
+......................................................................................
+ARESTA_H
+    Nos<Ponto> * GetPonto(const QString v, Nos<Ponto> *primo);
+    Aresta();
+    Aresta(const QString ln, Nos<Ponto> *primo);
+    Aresta(const Aresta &outra);
+    Aresta(QString v0, QString v1, Nos<Ponto> *primo);
+    Nos<Ponto> * GetVini();
+    Nos<Ponto> * GetVfim();
+    Aresta operator =(const Aresta &outra);
+    bool operator ==(const Aresta outra);
+......................................................................................
+FACE_H
+    Nos<Ponto> * GetPonto(const QString v, Nos<Ponto> *primo);
+    Face();
+    Face(const QString ln, Nos<Ponto> *primo);
+    Face(const Face &outra);
+    Face(Nos<Ponto> *v0, Nos<Ponto> *v1, Nos<Ponto> *v2);
+    Face(QString v0, QString v1, QString v2, Nos<Ponto> *primo);
+    Nos<Ponto> * GetVa();
+    Nos<Ponto> * GetVb();
+    Nos<Ponto> * GetVc();
+    Face operator =(const Face &outra);
+    bool operator ==(const Face outra);
+......................................................................................
+PONTO_H
+    double LerDouble(QString arg);
+    bool LerLinha(QString &ln, QString &id, QString &atr, double &x, double &y, double &z);
+    Ponto();
+    Ponto(const QString ln);
+    Ponto(const Ponto& outro);
+    Ponto(const QString id, const QString atr, const double x, const double y, const double z);
+    void SetId(QString id);
+    void SetAtr(QString atr);
+    void SetX(double x);
+    void SetY(double y);
+    void SetZ(double z);
+    QString GetId();
+    QString GetAtr();
+    double GetX();
+    double GetY();
+    double GetZ();
+    Ponto operator = (const Ponto &outro);
+    bool operator == (const Ponto outro);
+......................................................................................
+CIVIL_H
+    Civil(QWidget *parent = nullptr);
+    ~Civil();
+slots:
+    void on_actionLeica_triggered();
+    void on_actionGD5_triggered();
+    void on_actionDxf_leica_triggered();
+    void on_actionArs_triggered();
+    void on_actionSup_triggered();
+    void on_actionTrh_triggered();
+    void on_actionPnt_triggered();
+    void on_actionPnt_2_triggered();
+    void on_actionSup_2_triggered();
+    void on_actionCon_triggered();
+private:
+    void GuardaPontos();
+    void GuardaArestas();
+......................................................................................
+GNO_H
+
+#include <QString>
+
+template <class G>
+class Nos
+{
+public:
+    Nos<G> *Segue;
+    G Valor;
+    Nos()
+    {
+        Segue = nullptr;
+        Valor = G();
+    }
+
+    Nos(const G &arg)
+    {
+        Segue = nullptr;
+        Valor = G(arg);
+    }
+};
+
+#endif // GNO_H
+
+
+......................................................................................
+#ifndef GLISTA_H
+#define GLISTA_H
+
+#include "gno.h"
+
+template <class G>
+class Lista
+{
+private:
+    Nos<G> *Primo;
+    Nos<G> *Fim;
+    uint Count;
+
+public:
+    Lista()
+    {
+        Primo = Fim = nullptr;
+        Count = 0;
+    }
+
+    void Pushfront(const G arg)
+    {
+        Nos<G> *pont = new Nos<G>(arg);
+        if(Primo)
+        {
+            pont->Segue = Primo;
+            Primo = pont;
+        }
+        else
+            Primo = Fim = pont;
+        Count++;
+    }
+
+    void Pushback(const G arg)
+    {
+        Nos<G> *pont = new Nos<G>(arg);
+        if(Fim)
+        {
+            Fim->Segue = pont;
+            Fim = pont;
+        }
+        else
+            Primo = Fim = pont;
+        Count++;
+    }
+
+    void Pushn(uint n, const G arg)
+    {
+        if(!n)
+        {
+            Pushfront(arg);
+            return;
+        }
+        if(n >= Count)
+        {
+            Pushback(arg);
+            return;
+        }
+        uint i = 1;
+        Nos<G> *pontl = Primo;
+        while(i < n)
+        {
+            pontl = pontl->Segue;
+            i++;
+        }
+        Nos<G> *pont = new Nos<G>(arg);
+        pont->Segue = pontl->Segue;
+        pontl->Segue = pont;
+        Count++;
+    }
+
+    Nos<G> * GetPrimo()
+    {
+        return Primo;
+    }
+
+    G Getfront()
+    {
+        if(Empty())
+        {
+            G r;
+            return r;
+        }
+        return Primo->Valor;
+    }
+
+    G Getback()
+    {
+        if(Empty())
+        {
+            G r;
+            return r;
+        }
+        return Fim->Valor;
+    }
+
+    G Getn(uint n)
+    {
+        G r;
+        if(Empty()) return r;
+        if(!n) return Getfront();
+        if(n >= Count) return Getback();
+        uint i = 0;
+        Nos<G> *pontl = Primo;
+        while(i < n)
+        {
+            pontl = pontl->Segue;
+            i++;
+        }
+        return pontl->Valor;
+    }
+
+    G Popfront()
+    {
+        G r;
+        if(Primo)
+        {
+            Nos<G> *pont = Primo;
+            r = pont->Valor;
+            if(Primo->Segue)
+                Primo = Primo->Segue;
+            else
+                Primo = Fim = nullptr;
+            delete pont;
+            Count--;
+        }
+        return r;
+    }
+
+    G Popback()
+    {
+        G r;
+        if(Fim)
+        {
+            r = Fim->Valor;
+            Nos<G> *pont = Primo;
+            if(Fim == Primo)
+                Primo = Fim = nullptr;
+            else
+            {
+                while(pont->Segue != Fim) pont = pont->Segue;
+                Fim = pont;
+                pont = pont->Segue;
+            }
+            delete pont;
+            Count--;
+        }
+        return r;
+    }
+
+    G Popn(uint n)
+    {
+        G r;
+        if(Empty()) return r;
+        if(!n) return Popfront();
+        if(n >= Count) return Popback();
+        uint i = 0;
+        Nos<G> *pontl = Primo, *ponta;
+        while(i < n)
+        {
+            ponta = pontl;
+            pontl = pontl->Segue;
+            i++;
+        }
+        r = pontl->Valor;
+        ponta->Segue = pontl->Segue;
+        delete pontl;
+        Count --;
+        return r;
+    }
+
+    uint Length()
+    {
+        return Count;
+    }
+
+    bool Empty()
+    {
+        return (Count == 0);
+    }
+
+    void Clear()
+    {
+        if(Empty()) return;
+        Nos<G> *pont;
+        while(Primo != Fim)
+        {
+            pont = Primo;
+            Primo = Primo->Segue;
+            delete pont;
+            Count--;
+        }
+        pont = Primo;
+        Primo = Fim = nullptr;
+        delete pont;
+        Count--;
+    }
+
+    Lista<G> operator =(const Lista<G> outra)
+    {
+        Clear();
+        for(uint i = 0; i < outra.Length(); i++) Pushback(outra.Getn(i));
+        return *this;
+    }
+};
+
+#endif // GLISTA_H
+......................................................................................
+COMSERIAL_H
+    void Ler();
+    void Erro(QSerialPort::SerialPortError e);

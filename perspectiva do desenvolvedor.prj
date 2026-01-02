@@ -55,3 +55,27 @@
 Diante de bug que faz o guardapontos funcionar em umas situações e não em outras,
 aproveita-se para reformar estruturas de processamento.
 ancorar neste ponto.
+
+Manipulação de texto:
+	GERAL_H
+		QString fillEsquerda(QString tx, QChar c, uint n);				!....1....!
+		QString fillDireita(QString tx, QChar c, uint n);
+		QString fillNumero(QString tx, uint ni, uint nf);
+	DXFLEICA_H
+		bool RemoveEsquerda(QString &arg, const QString bnd);
+		bool SeparaEntities(QString &arg);
+		bool LerProxPonto(QString &arg, QString &id, QString &atr, QString &x, QString &y, QString &z);
+	ECIVIL_H
+		QString NormaTexto(QString arg);
+		QString FillPreTexto(QString tx, QChar c, uint n);				!....1....!
+	ARESTA_H, FACE_H, PONTO_H
+		Aresta(const QString ln, Nos<Ponto> *primo);
+		Face(const QString ln, Nos<Ponto> *primo);
+		Ponto(const QString ln);
+
+Operações com arquivo:
+	GERAL_H
+		bool Importa(QString &buf, QString dir, QString filtro, QString titulo);
+		bool Importa(QString &buf, QString filtro, QString titulo);
+		bool Exporta(QString &buf, QString dir, QString filtro, QString titulo);
+		bool Exporta(QString &buf, QString filtro, QString titulo);
