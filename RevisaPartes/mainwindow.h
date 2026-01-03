@@ -9,6 +9,9 @@ QT_BEGIN_NAMESPACE
 namespace Ui {class MainWindow;}
 QT_END_NAMESPACE
 
+//  ->  testar Aresta .. pra isso tenho que ter lista de pontos .. vou prescindir
+//  ->  criar Face
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

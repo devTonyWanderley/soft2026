@@ -55,7 +55,6 @@ void MainWindow::teste()
         << "Teste de QString IgnoreDireita(const QString tx, const QString exceto)";
     qDebug()
         << IgnoreDireita(IgnoreEsquerda("000000125,13500", a), a);
-    */
     qDebug()
         << "Teste de QString get_Id_Ln_Pnt(const QString ln)"
         << '\t'
@@ -76,6 +75,14 @@ void MainWindow::teste()
         << "Teste de QString get_Cota_Ln_Pnt(const QString ln)"
         << '\t'
         << get_Cota_Ln_Pnt("       0     AUX001000,0000005000,0000050,000");
+    */
+    Ponto p("      14      MF001013.8630004998.5390049.628");
+    qDebug()
+        << p.GetId() << '\t'
+        << p.GetAtr() << '\t'
+        << p.GetX() << '\t'
+        << p.GetY() << '\t'
+        << p.GetZ();
 }
 
 MainWindow::~MainWindow()

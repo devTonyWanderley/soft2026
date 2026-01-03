@@ -15,6 +15,12 @@ qt_add_executable(RevisaPartes
     ../Banco1/geral.cpp
     ../Banco1/Tipos/ponto.h ../Banco1/Tipos/ponto.cpp
     ../Banco1/ed/glista.h ../Banco1/ed/gno.h
+    ../Banco1/Tipos/aresta.h ../Banco1/Tipos/aresta.cpp
+    ../Banco1/edsup.h
+    ../Banco1/edsup.cpp
+    ../Banco1/Tipos/face.h ../Banco1/Tipos/face.cpp
+    ../Banco1/superficie.h
+    ../Banco1/superficie.cpp
 )
 
 qt_add_translations(

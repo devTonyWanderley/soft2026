@@ -80,6 +80,7 @@ QString get_Id_Ln_Pnt(const QString ln)
 {
     QString ig = TIPO_ALFA;
     ig += TIPO_NUM;
+    ig += TIPO_LIGA;
     return IgnoreEsquerda(ln.left(8), ig);
 }
 
@@ -122,4 +123,38 @@ double get_Cota_Ln_Pnt(const QString ln)
         tx = tx.left(tx.indexOf(',')) + '.' + tx.right(tx.length() - tx.indexOf(',') - 1);
     tx = IgnoreEsquerda(tx, ig);
     return tx.toDouble();
+}
+
+QString get_Va_Ln_Ars(const QString ln)
+{
+    QString ig = TIPO_ALFA;
+    ig += TIPO_NUM;
+    ig += TIPO_LIGA;
+    return IgnoreEsquerda(ln.left(8), ig);
+}
+
+QString get_Vb_Ln_Ars(const QString ln)
+{
+    QString ig = TIPO_ALFA;
+    ig += TIPO_NUM;
+    ig += TIPO_LIGA;
+    return IgnoreEsquerda(ln.right(8), ig);
+}
+
+QString get_Va_Ln_Fce(const QString ln)
+{
+    return get_Va_Ln_Ars(ln);
+}
+
+QString get_Vb_Ln_Fce(const QString ln)
+{
+    QString ig = TIPO_ALFA;
+    ig += TIPO_NUM;
+    ig += TIPO_LIGA;
+    return IgnoreEsquerda(ln.right(16).left(8), ig);
+}
+
+QString get_Vc_Ln_Fce(const QString ln)
+{
+    return get_Vb_Ln_Ars(ln);
 }
