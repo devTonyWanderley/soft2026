@@ -11,15 +11,20 @@ qt_add_executable(QCivil
     civil.cpp
     civil.h
     civil.ui
-    ../Banco/geral.cpp ../Banco/geral.h
-    ../Banco/ed/glista.h
-    ../Banco/tipos/aresta.cpp ../Banco/tipos/aresta.h
-    ../Banco/tipos/face.cpp ../Banco/tipos/face.h
-    ../Banco/tipos/ecivil.cpp ../Banco/tipos/ecivil.h
-    ../Banco/tipos/ponto.cpp ../Banco/tipos/ponto.h
-    ../Banco/forms/comserial.h ../Banco/forms/comserial.ui ../Banco/forms/comserial.cpp
-    ../Banco/DxfLeica.h
-    ../Banco/DxfLeica.cpp
+    ../Banco1/geral.h
+    ../Banco1/geral.cpp
+    ../Banco1/Tipos/ponto.h
+    ../Banco1/Tipos/ponto.cpp
+    ../Banco1/ed/gno.h
+    ../Banco1/ed/glista.h
+    ../Banco1/edsup.h
+    ../Banco1/edsup.cpp
+    ../Banco1/Tipos/aresta.h
+    ../Banco1/Tipos/aresta.cpp
+    ../Banco1/Tipos/face.h
+    ../Banco1/Tipos/face.cpp
+    ../Banco1/superficie.h
+    ../Banco1/superficie.cpp
 )
 
 qt_add_translations(

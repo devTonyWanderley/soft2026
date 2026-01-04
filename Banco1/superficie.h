@@ -4,9 +4,18 @@
 #include "Tipos/aresta.h"
 #include "Tipos/face.h"
 
-Lista<Ponto> SPontos;
-Lista<Ponto> SContorno;
-Lista<Aresta> SArestas;
-Lista<Face> SFaces;
+class Superficie
+{
+private:
+    QString Nome;
+    Lista<Ponto> Pontos;
+    Lista<Aresta> Arestas;
+    Lista<Face> Faces;
+    Lista<QString> Contorno;
+public:
+    Superficie(const QString id = "Genérica");
+    QString GNome();
+    void SNome(const QString id);
+};
 
 #endif // SUPERFICIE_H
