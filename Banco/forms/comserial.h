@@ -14,13 +14,16 @@ class ComSerial : public QDialog
     Q_OBJECT
 
 public:
-    QByteArray *Buf;
+    QString *Buf;
+    uint *Flg;
 
     explicit ComSerial(QWidget *parent = nullptr);
     ~ComSerial();
 
 private slots:
     void on_pbAbre_clicked();
+    void on_pbGuarda_clicked();
+    void on_pbCancela_clicked();
 
 private:
     Ui::ComSerial *ui;

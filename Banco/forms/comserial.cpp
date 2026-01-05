@@ -12,7 +12,7 @@ ComSerial::ComSerial(QWidget *parent): QDialog(parent), ui(new Ui::ComSerial)
     ui->pbAbre->setEnabled(true);
     ui->pbGuarda->setEnabled(false);
     ui->lbStatus->setText("Aguardando   ...  .. .");
-    Buf = new QByteArray;
+    Buf = new QString;
     Buf->clear();
 
     Qsp = new QSerialPort(this);
@@ -40,9 +40,20 @@ void ComSerial::on_pbAbre_clicked()
         ui->lbStatus->setText("Erro " + Qsp->errorString());
         return;
     }
-    ui->pbAbre->setEnabled(false);
     ui->pbGuarda->setEnabled(true);
     ui->lbStatus->setText("Porta aberta " + ui->cbBaud->currentText() + " bps " + ui->cbPort->currentText());
+}
+
+void ComSerial::on_pbGuarda_clicked()
+{
+    *Flg = 1;
+    this->close();
+}
+
+void ComSerial::on_pbCancela_clicked()
+{
+    Flg = 0;
+    this->close();
 }
 
 ComSerial::~ComSerial()

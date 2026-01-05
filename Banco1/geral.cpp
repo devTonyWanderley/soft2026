@@ -158,3 +158,83 @@ QString get_Vc_Ln_Fce(const QString ln)
 {
     return get_Vb_Ln_Ars(ln);
 }
+
+QString SeparaEntities(const QString arg)
+{
+    QString r = arg.right(arg.length() - arg.indexOf("ENTITIES"));
+    r = r.left(r.indexOf("ENDSEC"));
+    return r;
+}
+
+bool LerPntDXl(QString &buf, QString &ln)
+{
+    if(buf.indexOf("ENTITIES"))
+        buf = SeparaEntities(buf);
+    if(buf.indexOf("CODE") == -1)
+        return false;
+    ln.clear();
+    buf = buf.right(buf.length() - buf.indexOf("CODE"));
+    buf = buf.right(buf.length() - buf.indexOf("\n1\n") - 3);
+    QString atr = buf.left(buf.indexOf('\n'));
+
+    buf = buf.right(buf.length() - buf.indexOf("PT_ID"));
+    buf = buf.right(buf.length() - buf.indexOf("\n1\n") - 3);
+    QString id = buf.left(buf.indexOf('\n'));
+
+    buf = buf.right(buf.length() - buf.indexOf("HEIGHT"));
+    buf = buf.right(buf.length() - buf.indexOf("\n1\n") - 3);
+    QString h = buf.left(buf.indexOf('\n'));
+
+    buf = buf.right(buf.length() - buf.indexOf("CO_ORDS"));
+    buf = buf.right(buf.length() - buf.indexOf("\n1\n") - 3);
+    QString y = buf.left(buf.indexOf('\n'));
+
+    QString ig = TIPO_NUM;
+    ig += TIPO_SEP_NUM;
+    y = IgnoreEsquerda(y, ig);
+
+    QString x = y.left(y.indexOf(' '));
+    y = y.right(y.length() - y.indexOf(' '));
+    y = IgnoreEsquerda(y, ig);
+    ln = id + '\t' + atr + '\t' + x + '\t' + y + '\t' + h;
+    return true;
+}
+
+bool Importa(QString &buf, QString dir, QString filtro, QString titulo)
+{
+    QString id = QFileDialog::getOpenFileName(nullptr, titulo, dir, filtro);
+    if(id == "") return false;
+    QFile arq;
+    arq.setFileName(id);
+    if(!arq.open(QFile::ReadOnly | QFile::Text))return false;
+    QByteArray qba = arq.readAll();
+    //buf.clear();
+    buf = QString::fromUtf8(qba);
+    //buf = arq.readAll();
+    arq.close();
+    return true;
+}
+
+bool Importa(QString &buf, QString filtro, QString titulo)
+{
+    return Importa(buf, IDIR, filtro, titulo);
+}
+
+bool Exporta(QString &buf, QString dir, QString filtro, QString titulo)
+{
+    QString id = QFileDialog::getSaveFileName(nullptr, titulo, dir, filtro);
+    if(id == "") return false;
+    QFile arq;
+    arq.setFileName(id);
+    if(!arq.open(QFile::WriteOnly | QFile::Text))return false;
+    QTextStream out(&arq);
+    out << buf;
+    arq.close();
+    return true;
+}
+
+bool Exporta(QString &buf, QString filtro, QString titulo)
+{
+    return Exporta(buf, IDIR, filtro, titulo);
+}
+

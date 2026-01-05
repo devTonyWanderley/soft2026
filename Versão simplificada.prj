@@ -1,0 +1,8 @@
+Versão simplificada pra uso imediato .. apenas a primitiva
+	->Importar arquivo dxf da Leica, salvando no formato de 45 caracteres fixos *.pnt		..		cpp;
+	->Lançar pontos no esboço em cad		..		..		..		..		..		..		..		lsp;
+	->Traçar malha e exportar *.ars;		..		..		..		..		..		..		..		lsp;
+	->Importar arquivos *.pnt & *.ars;		..		..		..		..		..		..		..		cpp;
+	->Gerar faces, contorno, curvas de nível;		..		..		..		..		..		..		cpp;
+	->Exportar faces, contorno, curvas de nível;	..		..		..		..		..		..		cpp;
+	->Importar faces, contorno, curvas de nível;	..		..		..		..		..		..		lsp;
