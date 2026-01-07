@@ -6,7 +6,7 @@
 #define TIPO_SEP_NUM ",."
 #define TIPO_LIGA "-_<>"
 
-#define IDIR "C:\\2026\\Soft\\Inst\\"
+#define IDIR "C:\\"
 
 #include <QString>
 #include <QDebug>

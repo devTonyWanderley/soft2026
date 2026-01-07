@@ -12,10 +12,16 @@ private:
     Lista<Aresta> Arestas;
     Lista<Face> Faces;
     Lista<QString> Contorno;
+
+    void geraFaces();
 public:
     Superficie(const QString id = "Genérica");
     QString GNome();
     void SNome(const QString id);
+    void addPonto(const QString ln);
+    void addAresta(const QString ln);
+    uint numPontos();
+    uint numArestas();
 };
 
 #endif // SUPERFICIE_H
