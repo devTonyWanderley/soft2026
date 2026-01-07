@@ -28,6 +28,7 @@ private slots:
 private:
     Ui::ComSerial *ui;
     QSerialPort *Qsp;
+    uint conta;
 
     void Ler();
     void Erro(QSerialPort::SerialPortError e);

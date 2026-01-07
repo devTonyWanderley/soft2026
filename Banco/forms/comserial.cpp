@@ -14,6 +14,7 @@ ComSerial::ComSerial(QWidget *parent): QDialog(parent), ui(new Ui::ComSerial)
     ui->lbStatus->setText("Aguardando   ...  .. .");
     Buf = new QString;
     Buf->clear();
+    conta = 0;
 
     Qsp = new QSerialPort(this);
     connect(Qsp, &QSerialPort::readyRead, this, &ComSerial::Ler);
@@ -23,6 +24,8 @@ ComSerial::ComSerial(QWidget *parent): QDialog(parent), ui(new Ui::ComSerial)
 void ComSerial::Ler()
 {
     *Buf += Qsp->readAll();
+    if(!(++conta % 30))
+        ui->lbLn->setText(Buf->right(20));
 }
 
 void ComSerial::Erro(QSerialPort::SerialPortError e)

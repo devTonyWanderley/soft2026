@@ -196,7 +196,28 @@ bool LerPntDXl(QString &buf, QString &ln)
     QString x = y.left(y.indexOf(' '));
     y = y.right(y.length() - y.indexOf(' '));
     y = IgnoreEsquerda(y, ig);
-    ln = id + '\t' + atr + '\t' + x + '\t' + y + '\t' + h;
+
+    x = Ignore(x, ig);
+    y = Ignore(y, ig);
+    h = Ignore(h, ig);
+
+    ig = TIPO_ALFA;
+    ig += TIPO_NUM;
+    //ig += TIPO_LIGA;
+    Ignore(id, ig);
+    Ignore(atr, ig);
+
+    while((x.length() - x.indexOf('.')) > 4) x = x.left(x.length() - 1);
+    while((y.length() - y.indexOf('.')) > 4) y = y.left(y.length() - 1);
+    while((h.length() - h.indexOf('.')) > 4) h = h.left(h.length() - 1);
+
+    id = AddChr(id, ' ', 8, true);
+    atr = AddChr(atr, ' ', 8, true);
+    x = AddChr(x, '0', 10, true);
+    y = AddChr(y, '0', 11, true);
+    h = AddChr(h, '0', 8, true);
+
+    ln = id + atr + x + y + h;
     return true;
 }
 

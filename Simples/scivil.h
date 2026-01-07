@@ -31,21 +31,13 @@ public:
 
 private slots:
     void on_pbSerial_clicked();
-
     void on_pbGera_clicked();
-
     void on_pbDxf_clicked();
-
     void on_pbIpnt_clicked();
-
     void on_pbArs_clicked();
-
     void on_pbEpnt_clicked();
-
     void on_pbFce_clicked();
-
     void on_pbCon_clicked();
-
     void on_pbCn_clicked();
 
 private:
@@ -53,5 +45,11 @@ private:
     ComSerial *cs;
     QString Buffer;
     uint Passo;
+
+    Lista<Ponto> Lp;
+    Lista<Aresta> La;
+
+    void CarregaPontos(QString buf);
+    void CarregaArestas(QString buf);
 };
 #endif // SCIVIL_H
