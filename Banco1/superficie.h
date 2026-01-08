@@ -13,6 +13,7 @@ private:
     Lista<Face> Faces;
     Lista<QString> Contorno;
 
+    bool buscaAr2(uint &j, Nos<Ponto> *p, Nos<Ponto> *q, bool &ini);
     void geraFaces();
 public:
     Superficie(const QString id = "Genérica");

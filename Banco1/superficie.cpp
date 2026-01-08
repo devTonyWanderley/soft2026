@@ -42,28 +42,11 @@ uint Superficie::numArestas()
 void Superficie::geraFaces()
 {
     uint i = 0, j, k;
-    Lista<Aresta> cont;
-    Aresta ar0, ar1, ar2;
-    Nos<Ponto> *p, *q;
+    Nos<Ponto> *p, *q, *s, *r; // s é o comum. pode ser igual a p ou igual a q
     while(i < Arestas.Length())
     {
-        ar0 = Arestas.Getn(i);
+        p = Arestas.Getn(i).GetVini();
+        q = Arestas.Getn(i).GetVfim();
         j = i + 1;
-        cont = 0;
-        while(j < Arestas.Length())
-        {
-            ar1 = Arestas.Getn(j);
-            p = q = nullptr;
-            if(ar0.GetVini() == ar1.GetVini())
-            {
-                p = ar0.GetVfim();
-                q = ar1.GetVfim();
-            }
-            else if(ar0.GetVini() == ar1.GetVfim()) // parou por aqui
-            {
-                p = ar0.GetVfim();
-                q = ar1.GetVfim();
-            }
-        }
     }
 }
