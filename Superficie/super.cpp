@@ -44,6 +44,11 @@ void Super::on_pbOp_clicked()
         qDebug() << sup.numArestas();    //                  lembrar de apagar
         return;
     }
+    if(passo == 2)
+    {
+        sup.geraFaces();
+        qDebug() << sup.numFaces();
+    }
 }
 
 Super::~Super()
