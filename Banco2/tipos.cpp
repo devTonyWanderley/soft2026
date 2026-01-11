@@ -260,6 +260,111 @@ bool Exporta(QString &buf, QString filtro, QString titulo)     //  ln48
     return Exporta(buf, IDIR, filtro, titulo);
 }
 
+//  Operação:
+bool lerSegRetas(QString &buf, Lista<SegReta> &sr)
+{
+    if(!Importa(buf, "Semi-retas (*.ars)", "Importar semi-retas")) return false;
+    QString ln;
+    while(buf.length() >= 16)
+    {
+        ln = buf.left(16);
+        buf = buf.right(buf.length() - 17);
+        sr.Pushback(SegReta(ln));
+    }
+    return true;
+}
+
+bool buscaSegJ(const uint i, uint &j, Lista<SegReta> &s)
+{
+    while(j < (s.Length() - 1))
+    {
+        if(
+            (s.Getn(i).getsVa() == s.Getn(j).getsVa()) ||
+            (s.Getn(i).getsVa() == s.Getn(j).getsVb()) ||
+            (s.Getn(i).getsVb() == s.Getn(j).getsVb()) ||
+            (s.Getn(i).getsVb() == s.Getn(j).getsVa())
+            )
+        {
+            return true;
+        }
+        j++;
+    }
+    return false;
+}
+
+void fazSegk(const uint i, const uint j, Lista<SegReta> &s, QString &vp, QString &vq)
+{
+    if(s.Getn(i).getsVa() == s.Getn(j).getsVa())
+    {
+        vp = s.Getn(i).getsVb();
+        vq = s.Getn(j).getsVb();
+        return;
+    }
+    if(s.Getn(i).getsVa() == s.Getn(j).getsVb())
+    {
+        vp = s.Getn(i).getsVb();
+        vq = s.Getn(j).getsVa();
+        return;
+    }
+    if(s.Getn(i).getsVb() == s.Getn(j).getsVb())
+    {
+        vp = s.Getn(i).getsVa();
+        vq = s.Getn(j).getsVa();
+        return;
+    }
+    if(s.Getn(i).getsVb() == s.Getn(j).getsVa())
+    {
+        vp = s.Getn(i).getsVa();
+        vq = s.Getn(j).getsVb();
+        return;
+    }
+}
+
+bool buscaSegk(const uint i, const uint j, uint &k, Lista<SegReta> &s)
+{
+    QString vp, vq;
+    fazSegk(i, j, s, vp, vq);
+    while(k < s.Length())
+    {
+        if((s.Getn(k).getsVa() == vp) && (s.Getn(k).getsVb() == vq)) return true;
+        if((s.Getn(k).getsVa() == vq) && (s.Getn(k).getsVb() == vp)) return true;
+        k++;
+    }
+    return false;
+}
+
+bool geraFaces(Superficie &sup)
+{
+    QString buffer;
+    buffer.clear();
+    Lista<SegReta> sr;
+    sr.Clear();
+    if(!lerSegRetas(buffer, sr)) return false;
+    uint i = 0, j, k, c;
+    while(i < (sr.Length() - 2))
+    {
+        c = 0;
+        j = i + 1;
+        while((c < 2) && (buscaSegJ(i, j, sr)))
+        {
+            k = j + 1;
+            if(buscaSegk(i, j, k, sr))
+            {
+                QString v;
+                if((sr.Getn(i).getsVa() == sr.Getn(j).getsVa()) || (sr.Getn(i).getsVb() == sr.Getn(j).getsVa()))
+                    v = sr.Getn(j).getsVb();
+                else
+                    v = sr.Getn(j).getsVa();
+                sup.addFace(Face(sr.Getn(i).getsVa(), sr.Getn(i).getsVb(), v));
+                c++;
+            }
+            j++;
+        }
+        i++;
+    }
+    return true;
+}
+
 //  Tipos
 Ponto::Ponto()
 {
@@ -384,6 +489,16 @@ SegReta::SegReta(const SegReta &outra)
     vb = outra.vb;
 }
 
+QString SegReta::getsVa()
+{
+    return va;
+}
+
+QString SegReta::getsVb()
+{
+    return vb;
+}
+
 SegReta SegReta::operator =(const SegReta &outra)
 {
     va = outra.va;
@@ -461,4 +576,27 @@ bool Face::operator ==(const Face outra)
         return false;
     }
     return false;
+}
+
+Superficie::Superficie(QString id)
+{
+    nome = id;
+    pontos.Clear();
+    faces.Clear();
+    contorno.Clear();
+}
+
+QString Superficie::getNome()
+{
+    return nome;
+}
+
+void Superficie::setNome(const QString id)
+{
+    nome = id;
+}
+
+void Superficie::addFace(const Face f)
+{
+    faces.Pushback(f);
 }

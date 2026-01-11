@@ -17,7 +17,7 @@
 #include <QFile>
 #include <QFileDialog>
 
-//  Manipulação de texto:
+/*  Manipulação de texto:
 QString AddChr(const QString tx, const QChar c, const uint n, bool esq);
 QString AddChr(const QString tx, const QString c, const uint n, bool esq);
 
@@ -46,6 +46,14 @@ bool Importa(QString &buf, QString dir, QString filtro, QString titulo);
 bool Importa(QString &buf, QString filtro, QString titulo);
 bool Exporta(QString &buf, QString dir, QString filtro, QString titulo);
 bool Exporta(QString &buf, QString filtro, QString titulo);
+
+//  Operação:
+bool lerSegRetas(QString &buf, Lista<SegReta> &sr);
+bool buscaSegJ(const uint i, uint &j, Lista<SegReta> &s);
+void fazSegk(const uint i, const uint j, Lista<SegReta> &s, QString &vp, QString &vq);
+bool buscaSegk(const uint i, const uint j, uint &k, Lista<SegReta> &s);
+bool geraFaces(Superficie &sup);
+*/
 
 //  Tipos
 template <class G>
@@ -305,6 +313,8 @@ public:
     SegReta(const QString a, const QString b);
     SegReta(const QString ln);
     SegReta(const SegReta &outra);
+    QString getsVa();
+    QString getsVb();
     SegReta operator =(const SegReta &outra);
     bool operator ==(const SegReta outra);
 };
@@ -332,9 +342,47 @@ private:
     Lista<Face> faces;
     Lista<QString> contorno;
 public:
-    Superficie(const QString id = "generica");
+    Superficie(QString id = "generica");
     QString getNome();
     void setNome(const QString id);
+    void addFace(const Face f);
 };
+
+//  Manipulação de texto:
+QString AddChr(const QString tx, const QChar c, const uint n, bool esq);
+QString AddChr(const QString tx, const QString c, const uint n, bool esq);
+
+QString Ignore(const QString tx, const QString exceto);
+QString IgnoreEsquerda(const QString tx, const QString exceto);
+QString IgnoreDireita(const QString tx, const QString exceto);
+
+QString get_Id_Ln_Pnt(const QString ln);
+QString get_Atr_Ln_Pnt(const QString ln);
+double get_Abci_Ln_Pnt(const QString ln);
+double get_Orde_Ln_Pnt(const QString ln);
+double get_Cota_Ln_Pnt(const QString ln);
+
+QString get_Va_Ln_Ars(const QString ln);
+QString get_Vb_Ln_Ars(const QString ln);
+
+QString get_Va_Ln_Fce(const QString ln);
+QString get_Vb_Ln_Fce(const QString ln);
+QString get_Vc_Ln_Fce(const QString ln);
+
+QString SeparaEntities(const QString arg);
+bool LerPntDXl(QString &buf, QString &ln);
+
+//  Arquivo
+bool Importa(QString &buf, QString dir, QString filtro, QString titulo);
+bool Importa(QString &buf, QString filtro, QString titulo);
+bool Exporta(QString &buf, QString dir, QString filtro, QString titulo);
+bool Exporta(QString &buf, QString filtro, QString titulo);
+
+//  Operação:
+bool lerSegRetas(QString &buf, Lista<SegReta> &sr);
+bool buscaSegJ(const uint i, uint &j, Lista<SegReta> &s);
+void fazSegk(const uint i, const uint j, Lista<SegReta> &s, QString &vp, QString &vq);
+bool buscaSegk(const uint i, const uint j, uint &k, Lista<SegReta> &s);
+bool geraFaces(Superficie &sup);
 
 #endif // TIPOS_H
