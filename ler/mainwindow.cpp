@@ -84,7 +84,7 @@ bool Importa(QByteArray &buf, const QString dir, const QString filtro, const QSt
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    cfg = new cfgSerial(nullptr);
+    cfg = new cfgCom(this);
     cfg->show();
     QString id = QFileDialog::getOpenFileName(nullptr, "abrir", "C:\\Tony\\Soft\\soft2026\\Inst\\", "Arquivo dxf (*.dxf)");
     if(id == "") return;

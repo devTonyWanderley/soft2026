@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.19)
 project(ler LANGUAGES CXX)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets LinguistTools)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets LinguistTools SerialPort)
 
 qt_standard_project_setup()
 
@@ -11,10 +11,9 @@ qt_add_executable(ler
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
-    ../Banco3/cfgserial.h
-    ../Banco3/cfgserial.cpp
-    ../Banco3/cfgserial.ui
-
+    ../Banco3/cfgcom.ui
+    ../Banco3/cfgcom.h
+    ../Banco3/cfgcom.cpp
 )
 
 qt_add_translations(
@@ -26,6 +25,7 @@ target_link_libraries(ler
     PRIVATE
         Qt::Core
         Qt::Widgets
+        Qt6::SerialPort
 )
 
 include(GNUInstallDirs)

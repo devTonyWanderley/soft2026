@@ -6,7 +6,8 @@
 #include <QFileDialog>
 #include <QStack>
 #include <QTextStream>
-#include "../Banco3/cfgserial.h"
+//#include "../Banco3/cfgserial.h"
+#include "../Banco3/cfgcom.h"
 
 /*      --DIAGRAMA DE FLUXO--
 graph TD
@@ -21,6 +22,18 @@ graph TD
             H --> B
                 B -- Não --> I[Fim do Slot]
 */
+
+
+
+//  --FORMATO DA LINHA DE DADOS--
+//  ID      = 12 CARACTERES .. EXEMPLO: "           0"
+//  ATR     = 12 CARACTERES .. EXEMPLO: "          pn"
+//  ABC     = 10 CARACTERES, COM 4 DECIMAIS .. EXEMPLO: "9999999999" => 000.001,0000 = 1m
+//  ORD     = 11 CARACTERES, COM 4 DECIMAIS .. EXEMPLO: "99999999999" => 0.000.001,0000 = 1m
+//  COTA    = 8 CARACTERES, COM 4 DECIMAIS .. EXEMPLO: "99999999" => 0.001,0000 = 1m
+//  IDIDIDIDIDID    ATRATRATRATR    ABCABCABCA  ORDORDORDOR COTACOTA
+//  12              12              10          11          8
+//  [0 .. 11]       [12 .. 23]      [24 .. 33]  [34 .. 44]  [45 .. 52]
 
 class pnt
 {
@@ -61,7 +74,7 @@ public:
 private:
     Ui::MainWindow *ui;
     QByteArray lBuffer;
-    cfgSerial * cfg;
+    cfgCom * cfg;
 
 };
 
