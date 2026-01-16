@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QStack>
 #include <QTextStream>
+#include "../Banco3/cfgserial.h"
 
 /*      --DIAGRAMA DE FLUXO--
 graph TD
@@ -44,6 +45,7 @@ public:
     double pGetZ();
 };
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui {class MainWindow;}
 QT_END_NAMESPACE
@@ -59,6 +61,7 @@ public:
 private:
     Ui::MainWindow *ui;
     QByteArray lBuffer;
+    cfgSerial * cfg;
 
 };
 

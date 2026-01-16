@@ -1,43 +1,43 @@
 cmake_minimum_required(VERSION 3.19)
-project(ler LANGUAGES CXX)
+project(Esqueleto LANGUAGES CXX)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets LinguistTools)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets LinguistTools SerialPort)
 
 qt_standard_project_setup()
 
-qt_add_executable(ler
+qt_add_executable(Esqueleto
     WIN32 MACOSX_BUNDLE
     main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
-    ../Banco3/cfgserial.h
-    ../Banco3/cfgserial.cpp
-    ../Banco3/cfgserial.ui
-
+    campo.cpp
+    campo.h
+    campo.ui
+    ../Banco3/cfgcom.ui
+    ../Banco3/cfgcom.h
+    ../Banco3/cfgcom.cpp
 )
 
 qt_add_translations(
-    TARGETS ler
-    TS_FILES ler_pt_BR.ts
+    TARGETS Esqueleto
+    TS_FILES Esqueleto_pt_BR.ts
 )
 
-target_link_libraries(ler
+target_link_libraries(Esqueleto
     PRIVATE
         Qt::Core
         Qt::Widgets
+        Qt6::SerialPort
 )
 
 include(GNUInstallDirs)
 
-install(TARGETS ler
+install(TARGETS Esqueleto
     BUNDLE  DESTINATION .
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
 qt_generate_deploy_app_script(
-    TARGET ler
+    TARGET Esqueleto
     OUTPUT_SCRIPT deploy_script
     NO_UNSUPPORTED_PLATFORM_ERROR
 )
