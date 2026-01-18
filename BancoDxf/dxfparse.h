@@ -40,6 +40,8 @@ public:
     // Formata um único objeto TopoPoint para a string de 68 caracteres
     static QString formatToFixedLine(const TopoPoint &p);
 
+    static bool fazCadScr(const QString &filePath, const QVector<TopoPoint> &points);
+
 private:
     // Lógica interna de processamento de blocos DXF
     static QVector<TopoPoint> parseLeicaDxf(const QByteArray &data);

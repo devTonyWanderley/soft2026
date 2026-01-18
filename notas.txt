@@ -2,3 +2,4 @@ Relatório de produção:
 	C:\2026\Soft\QTop\*.*	-	Cumpre a função, mas está em processo de aprimoramento;
 	C:\2026\Soft\parse\*.*	-	O produtor de C:\2026\Soft\BancoDxf\dxfparse.h & ..\dxfparse.cpp	-	pronto.
 	C:\2026\Soft\WPntLeica\*.*	-	versão anterior de parse. - apagar.
+	C:\2026\Soft\WEdita\*.*	-	em desenvolvimento

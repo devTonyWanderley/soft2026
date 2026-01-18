@@ -1,5 +1,6 @@
 #include "../BancoDxf/dxfparse.h"
 #include <QtMath>
+#include <QLocale>
 
 QVector<TopoPoint> DxfParser::loadAndParse(const QString &filePath)
 {
@@ -105,4 +106,37 @@ QString DxfParser::formatToFixedLine(const TopoPoint &p)
         .arg(QString::number(nDec).rightJustified(12, '0'))
         .arg(QString::number(eDec).rightJustified(12, '0'))
         .arg(QString::number(zDec).rightJustified(12, '0'));
+}
+
+bool DxfParser::fazCadScr(const QString &filePath, const QVector<TopoPoint> &points)
+{
+    QFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)) return false;
+
+    QTextStream out(&file);
+    // Força o ponto como separador decimal (essencial para o CAD)
+    out.setLocale(QLocale::C);
+
+    // 1. Cabeçalho do Script (LISP)
+    out << ";; Script gerado automaticamente pelo parse\n";
+    out << "(if (not (tblsearch \"APPID\" \"WPNT\")) (regapp \"WPNT\"))\n";
+
+    // 2. Loop de geração das entidades POINT com XData
+    for (const TopoPoint &p : points) {
+        // Formato: (entmake (list '(0 . "POINT") (list 10 X Y Z) (list -3 (list "APP" '(1000 . "ID") '(1000 . "ATTR")))))
+        out << "(entmake (list "
+            << "'(0 . \"POINT\") "
+            << "(list 10 "
+            << QString::number(p.e, 'f', 4) << " "
+            << QString::number(p.n, 'f', 4) << " "
+            << QString::number(p.z, 'f', 4) << ") "
+            << "(list -3 (list \"WPNT\" "
+            << "'(1000 . \"" << p.id.trimmed() << "\") "
+            << "'(1000 . \"" << p.attr.trimmed() << "\")))))\n";
+    }
+
+    // 3. Finalização
+    out << "_ZOOM _E\n";
+    file.close();
+    return true;
 }
