@@ -4,6 +4,8 @@
 #include <QToolBar>     // Para a barra de ferramentas
 #include <QAction>      // Para os botões de comando
 #include <QDockWidget>  // Se for usar a barra lateral
+#include <QStyle>
+#include <QApplication>
 
 TopoPoint parsePDWLine(const QString &line)
 {
@@ -19,23 +21,59 @@ TopoPoint parsePDWLine(const QString &line)
 
 SurfaceManager::SurfaceManager(QWidget *parent): QMainWindow(parent)
 {
+    //qDebug() << "1. Iniciando Construtor...";
+    QStyle *style = QApplication::style();
+    QToolBar *sToolBar = addToolBar("Ferramentas"); // Aqui declaramos sToolBar
+    QAction *actTIN = sToolBar->addAction("Gerar Malha");
+    QDockWidget *dock = new QDockWidget("Propriedades", this);
+
+    //qDebug() << "Linha 30";
+
+    // Ícone de Lupa (StandardPixmap::SP_FileDialogContentsView ou SP_MessageBoxInformation)
+    sActInspect = new QAction("Inspecionar", this);
+    sActInspect->setIcon(style->standardIcon(QStyle::SP_FileDialogContentsView));
+    QIcon iconInspect = style->standardIcon(QStyle::SP_FileDialogContentsView);
+    sActInspect->setIcon(iconInspect);
+
+    //qDebug() << "Linha 36";
+
+    // Ícone de Caneta/Editar (StandardPixmap::SP_DialogReset ou SP_FileIcon)
+    QIcon iconDraw = style->standardIcon(QStyle::SP_DialogResetButton);
+    sActDraw = new QAction(iconDraw, "Desenhar", this);
+    sActDraw->setCheckable(true);
+    sActDraw->setIcon(iconDraw);
+
+    // Ícone de Malha/Engrenagem (StandardPixmap::SP_ComputerIcon ou SP_BrowserReload)
+    QIcon iconTIN = style->standardIcon(QStyle::SP_BrowserReload);
+
+    qDebug() << "Linha 43";
+
     sScene = new QGraphicsScene(this);
     sView = new QGraphicsView(sScene, this);
 
     setCentralWidget(sView); // O gráfico é o rei da tela
     statusBar()->showMessage("Aguardando arquivo PDW...");
     statusBar()->setStyleSheet("background-color: #f0f0f0; border-top: 1px solid #ccc;");
-    QToolBar *sToolBar = addToolBar("Ferramentas"); // Aqui declaramos sToolBar
     sToolBar->setMovable(false);
-    QAction *actTIN = sToolBar->addAction("Gerar Malha");
+    actTIN->setIcon(iconTIN);
     connect(actTIN, &QAction::triggered, this, &SurfaceManager::generateTIN);
+
+    qDebug() << "Linha 53";
+
+    // Botão Inspeção (Ver dados do ponto)
+    sActInspect = sToolBar->addAction("Inspecionar");
+    sActInspect->setCheckable(true);
+    connect(sActInspect, &QAction::triggered, this, &SurfaceManager::setModeInspect);// Botão Breakline (Ligar pontos)
+    sActDraw = sToolBar->addAction("Desenhar Breakline");
+    sActDraw->setCheckable(true);
+    connect(sActDraw, &QAction::triggered, this, &SurfaceManager::setModeDraw);
+
+    sToolBar->addSeparator();
 
 
     // 3. ÁREA DE FERRAMENTAS (TOOLBAR)
     // Cria uma barra no topo ou lateral para os botões (Delaunay, Salvar, etc)
-    QToolBar *toolbar = addToolBar("Ferramentas");
-    toolbar->setMovable(false);
-    QDockWidget *dock = new QDockWidget("Propriedades", this);
+    sToolBar->setMovable(false);
     dock->setAllowedAreas(Qt::RightDockWidgetArea);
     addDockWidget(Qt::RightDockWidgetArea, dock);
 
@@ -174,6 +212,23 @@ void SurfaceManager::updateGraphics() {
 }
 
 void SurfaceManager::generateTIN()
-{}
+{
+    statusBar()->showMessage("Processando Triangulação de Delaunay...");
+    // Aqui chamaremos seu motor numérico depois
+}
+
+void SurfaceManager::setModeDraw()
+{
+    sCurrentMode = InteractionMode::DrawBreakline;
+    sActInspect->setChecked(false);
+    statusBar()->showMessage("Modo: Desenho de Breaklines (Clique em dois pontos)");
+}
+
+void SurfaceManager::setModeInspect()
+{
+    sCurrentMode = InteractionMode::Inspect;
+    sActDraw->setChecked(false);
+    statusBar()->showMessage("Modo: Inspeção de Pontos");
+}
 
 SurfaceManager::~SurfaceManager() {}

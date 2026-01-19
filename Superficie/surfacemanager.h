@@ -40,11 +40,19 @@ class SurfaceManager : public QMainWindow
 public:
     SurfaceManager(QWidget *parent = nullptr);
     ~SurfaceManager();
+    enum class InteractionMode { Pan, Inspect, DrawBreakline };
+
 protected:
     // Eventos para o "Plus" de arrastar arquivos
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dropEvent(QDropEvent *event) override;
     bool eventFilter(QObject *obj, QEvent *event) override;
+
+private slots:
+    void setModeInspect();
+    void setModeDraw();
+    void generateTIN(); // Onde a mágica da triangulação acontece
+
 private:
     QList<TopoPoint> sPoints;
     QList<Triangle> sTriangles;
@@ -53,9 +61,13 @@ private:
     QGraphicsScene *sScene;
     QGraphicsView  *sView;
 
+    InteractionMode sCurrentMode = InteractionMode::Pan;
+    QAction *sActInspect;
+    QAction *sActDraw;
+
     // Funções de Processamento
     void loadPdwFile(const QString &fileName);
-    void generateTIN(); // Onde a mágica da triangulação acontece
+
     void exportSurface(const QString &fileName);
     void updateGraphics();
 };
