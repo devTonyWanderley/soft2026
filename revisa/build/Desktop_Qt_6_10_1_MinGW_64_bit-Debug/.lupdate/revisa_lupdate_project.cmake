@@ -1,0 +1,11 @@
+set(lupdate_project_file "C:/Tony/Soft/soft2026/revisa/CMakeLists.txt")
+set(lupdate_translations "C:/Tony/Soft/soft2026/revisa/revisa_pt_BR.ts")
+set(lupdate_include_paths "")
+set(lupdate_sources "")
+set(lupdate_subproject_count 1)
+
+set(lupdate_subproject1_source_dir "C:/Tony/Soft/soft2026/revisa")
+set(lupdate_subproject1_include_paths "C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisa_autogen/include;C:/Qt/6.10.1/mingw_64/include/QtCore;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/mkspecs/win32-g++;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/include/QtWidgets;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/include/QtGui;C:/Qt/6.10.1/mingw_64/include")
+set(lupdate_subproject1_sources "C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisa_autogen/mocs_compilation.cpp;main.cpp;mainwindow.cpp;mainwindow.h;mainwindow.ui;../Banco2/tipos.h;../Banco2/tipos.cpp;C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/revisa_translations.qrc;C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisa_pt_BR.qm;C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_revisa_translations.cpp;C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisa_autogen/include/ui_mainwindow.h;C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisa_autogen/timestamp;C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisa_pt_BR.qm.rule;C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_revisa_translations.cpp.rule;C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisa_autogen/timestamp.rule")
+set(lupdate_subproject1_excluded "")
+set(lupdate_subproject1_autogen_dir "C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisa_autogen")

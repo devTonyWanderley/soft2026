@@ -1,0 +1,11 @@
+set(lupdate_project_file "C:/Tony/Soft/soft2026/Esqueleto/CMakeLists.txt")
+set(lupdate_translations "C:/Tony/Soft/soft2026/Esqueleto/Esqueleto_pt_BR.ts")
+set(lupdate_include_paths "")
+set(lupdate_sources "")
+set(lupdate_subproject_count 1)
+
+set(lupdate_subproject1_source_dir "C:/Tony/Soft/soft2026/Esqueleto")
+set(lupdate_subproject1_include_paths "C:/Tony/Soft/soft2026/Esqueleto/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/Esqueleto_autogen/include;C:/Qt/6.10.1/mingw_64/include/QtCore;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/mkspecs/win32-g++;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/include/QtWidgets;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/include/QtGui;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/include/QtSerialPort;C:/Qt/6.10.1/mingw_64/include")
+set(lupdate_subproject1_sources "C:/Tony/Soft/soft2026/Esqueleto/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/Esqueleto_autogen/mocs_compilation.cpp;main.cpp;campo.cpp;campo.h;campo.ui;../Banco3/cfgcom.ui;../Banco3/cfgcom.h;../Banco3/cfgcom.cpp;C:/Tony/Soft/soft2026/Esqueleto/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/Esqueleto_translations.qrc;C:/Tony/Soft/soft2026/Esqueleto/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/Esqueleto_pt_BR.qm;C:/Tony/Soft/soft2026/Esqueleto/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_Esqueleto_translations.cpp;C:/Tony/Soft/soft2026/Esqueleto/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/Esqueleto_autogen/include/ui_campo.h;C:/Tony/Soft/soft2026/Esqueleto/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/Esqueleto_autogen/include/../Banco3/ui_cfgcom.h;C:/Tony/Soft/soft2026/Esqueleto/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/Esqueleto_autogen/timestamp;C:/Tony/Soft/soft2026/Esqueleto/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/Esqueleto_pt_BR.qm.rule;C:/Tony/Soft/soft2026/Esqueleto/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_Esqueleto_translations.cpp.rule;C:/Tony/Soft/soft2026/Esqueleto/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/Esqueleto_autogen/timestamp.rule")
+set(lupdate_subproject1_excluded "")
+set(lupdate_subproject1_autogen_dir "C:/Tony/Soft/soft2026/Esqueleto/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/Esqueleto_autogen")

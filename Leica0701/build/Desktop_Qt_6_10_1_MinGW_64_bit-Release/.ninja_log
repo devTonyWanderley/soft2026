@@ -1,0 +1,15 @@
+# ninja log v6
+12	147	7896595610788905	Leica0701_pt_BR.qm	e94bde8515d4e8be
+12	147	7896595610788905	C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/Leica0701_pt_BR.qm	e94bde8515d4e8be
+23	1279	7896595621018471	Leica0701_autogen/timestamp	ea5cbba2f8d46efe
+23	1279	7896595621018471	Leica0701_autogen/mocs_compilation.cpp	ea5cbba2f8d46efe
+23	1279	7896595621018471	C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/Leica0701_autogen/timestamp	ea5cbba2f8d46efe
+23	1279	7896595621018471	C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/Leica0701_autogen/mocs_compilation.cpp	ea5cbba2f8d46efe
+1308	1368	7896595623012250	.qt/rcc/qrc_Leica0701_translations.cpp	77d636f11852831c
+1308	1368	7896595623012250	C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/.qt/rcc/qrc_Leica0701_translations.cpp	77d636f11852831c
+1435	1825	7896595623751353	CMakeFiles/Leica0701.dir/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/.qt/rcc/qrc_Leica0701_translations.cpp.obj	7ba31688fb603cb7
+1368	4614	7896595623082063	CMakeFiles/Leica0701.dir/Leica0701_autogen/mocs_compilation.cpp.obj	3f206f5e5aae198
+1385	4664	7896595623252644	CMakeFiles/Leica0701.dir/main.cpp.obj	7af7219ba5bfdc32
+1419	5300	7896595623591747	CMakeFiles/Leica0701.dir/C_/Tony/Soft/soft2026/Banco1/geral.cpp.obj	8a1630bc4a9b2bde
+1403	5350	7896595623432167	CMakeFiles/Leica0701.dir/leica.cpp.obj	9cd3a09ea33c372f
+5350	5613	7896595662905994	Leica0701.exe	86b24683bc874fa5

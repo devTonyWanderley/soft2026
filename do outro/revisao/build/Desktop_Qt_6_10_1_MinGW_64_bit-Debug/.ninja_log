@@ -1,0 +1,23 @@
+# ninja log v6
+10	153	7895998684743503	revisao_pt_BR.qm	2a6da73f268bd535
+21	821	7895998690564480	C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisao_autogen/mocs_compilation.cpp	3e7fa6530641fc81
+836	896	7895998692179696	.qt/rcc/qrc_revisao_translations.cpp	5d7fb9ac88c1d61e
+896	3850	7895998692305465	CMakeFiles/revisao.dir/revisao_autogen/mocs_compilation.cpp.obj	8b0eca9ed956247d
+10	153	7895998684743503	C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisao_pt_BR.qm	2a6da73f268bd535
+21	821	7895998690564480	revisao_autogen/timestamp	3e7fa6530641fc81
+836	896	7895998692179696	C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_revisao_translations.cpp	5d7fb9ac88c1d61e
+21	821	7895998690564480	C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisao_autogen/timestamp	3e7fa6530641fc81
+21	821	7895998690564480	revisao_autogen/mocs_compilation.cpp	3e7fa6530641fc81
+942	1236	7895998692652219	CMakeFiles/revisao.dir/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_revisao_translations.cpp.obj	f92ea5a2ae3ff98d
+911	4000	7895998692386196	CMakeFiles/revisao.dir/main.cpp.obj	a9ceef4dc5182ddc
+927	4023	7895998692552170	CMakeFiles/revisao.dir/revjaneiro.cpp.obj	bb8c48289af66f92
+4023	4340	7895998723577478	revisao.exe	8a5bd4552f8a4e80
+18	589	7896028826660508	revisao_autogen/timestamp	3e7fa6530641fc81
+18	589	7896028826660508	revisao_autogen/mocs_compilation.cpp	3e7fa6530641fc81
+18	589	7896028826660508	C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisao_autogen/timestamp	3e7fa6530641fc81
+18	589	7896028826660508	C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisao_autogen/mocs_compilation.cpp	3e7fa6530641fc81
+597	2348	7896028827742936	CMakeFiles/revisao.dir/C_/Tony/Soft/Janeiro/Banco2/tipos.cpp.obj	f091f1473642961a
+590	3389	7896028827721720	CMakeFiles/revisao.dir/revisao_autogen/mocs_compilation.cpp.obj	8b0eca9ed956247d
+593	3543	7896028827742936	CMakeFiles/revisao.dir/main.cpp.obj	a9ceef4dc5182ddc
+595	3551	7896028827742936	CMakeFiles/revisao.dir/revjaneiro.cpp.obj	bb8c48289af66f92
+3551	3867	7896028857326002	revisao.exe	8dcf4fe17ac2ba28

@@ -1,0 +1,11 @@
+set(lupdate_project_file "C:/Tony/Soft/Janeiro/revisao/CMakeLists.txt")
+set(lupdate_translations "C:/Tony/Soft/Janeiro/revisao/revisao_pt_BR.ts")
+set(lupdate_include_paths "")
+set(lupdate_sources "")
+set(lupdate_subproject_count 1)
+
+set(lupdate_subproject1_source_dir "C:/Tony/Soft/Janeiro/revisao")
+set(lupdate_subproject1_include_paths "C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisao_autogen/include;C:/Qt/6.10.1/mingw_64/include/QtCore;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/mkspecs/win32-g++;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/include/QtWidgets;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/include/QtGui;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/include/QtSerialPort;C:/Qt/6.10.1/mingw_64/include")
+set(lupdate_subproject1_sources "C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisao_autogen/mocs_compilation.cpp;main.cpp;revjaneiro.cpp;revjaneiro.h;revjaneiro.ui;../Banco2/tipos.h;../Banco2/tipos.cpp;C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/revisao_translations.qrc;C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisao_pt_BR.qm;C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_revisao_translations.cpp;C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisao_autogen/include/ui_revjaneiro.h;C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisao_autogen/timestamp;C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisao_pt_BR.qm.rule;C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_revisao_translations.cpp.rule;C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisao_autogen/timestamp.rule")
+set(lupdate_subproject1_excluded "")
+set(lupdate_subproject1_autogen_dir "C:/Tony/Soft/Janeiro/revisao/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisao_autogen")

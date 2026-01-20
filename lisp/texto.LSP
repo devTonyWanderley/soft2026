@@ -63,6 +63,15 @@
   num
   )
 
+;;;--ADEQUAÇÃO 20-01-26--
+(defun civil:preenche-num-4dec(num tam)
+  (setq num (itoa (fix (* 10000.0 num))))
+  (setq num (civil:preenche-texto-na-cabeça num "0" tam))
+  num
+  )
+;;;-------------------------
+
+;|
 (defun civil:ln-ponto-export(arg / id atr x y z)
   (setq id (civil:preenche-texto-na-cabeça (car arg) " " 8)
 	atr (civil:preenche-texto-na-cabeça (cadr arg) " " 8)
@@ -72,10 +81,25 @@
 	)
   (strcat id atr x y z)
   )
+|;
 
-(defun civil:ln-aresta-export(arg)
-  (strcat (civil:preenche-texto-na-cabeça (car arg) " " 8) (civil:preenche-texto-na-cabeça (cadr arg) " " 8))
+;;;--ADEQUAÇÃO 20-01-26--
+(defun civil:ln-ponto-export(arg / id atr x y z)
+  (setq id (civil:preenche-texto-na-cauda (car arg) " " 16)
+	atr (civil:preenche-texto-na-cauda (cadr arg) " " 16)
+	x (civil:preenche-num-4dec (car (last arg)) 12)
+	y (civil:preenche-num-4dec (cadr (last arg)) 12)
+	z (civil:preenche-num-4dec (caddr (last arg)) 12)
+	)
+  (strcat id atr y x z)
   )
+;;;-------------------------
+
+;;;--ADEQUAÇÃO 20-01-26--
+(defun civil:ln-aresta-export(arg)
+  (strcat (civil:preenche-texto-na-cauda (car arg) " " 16) (civil:preenche-texto-na-cauda (cadr arg) " " 16))
+  )
+;;;-------------------------
 
 ;|CATÁLOGO
 	civil:norma_tx(arg / c r)

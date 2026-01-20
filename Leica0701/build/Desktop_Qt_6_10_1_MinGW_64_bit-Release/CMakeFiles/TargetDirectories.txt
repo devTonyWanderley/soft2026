@@ -1,0 +1,13 @@
+C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/Leica0701.dir
+C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/Leica0701_lupdate.dir
+C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/update_translations.dir
+C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/Leica0701_lrelease.dir
+C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/release_translations.dir
+C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/edit_cache.dir
+C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/rebuild_cache.dir
+C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/list_install_components.dir
+C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/install.dir
+C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/install/local.dir
+C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/install/strip.dir
+C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/Leica0701_autogen_timestamp_deps.dir
+C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/CMakeFiles/Leica0701_autogen.dir

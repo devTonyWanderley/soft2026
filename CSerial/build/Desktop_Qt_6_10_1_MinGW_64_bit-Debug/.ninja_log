@@ -1,0 +1,14 @@
+# ninja log v6
+12	151	7899183628111387	CSerial_pt_BR.qm	3e8862df7246a29e
+12	151	7899183628111387	C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CSerial_pt_BR.qm	3e8862df7246a29e
+23	1225	7899183637755392	CSerial_autogen/timestamp	75b075b4cbd78acf
+23	1225	7899183637755392	CSerial_autogen/mocs_compilation.cpp	75b075b4cbd78acf
+23	1225	7899183637755392	C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CSerial_autogen/timestamp	75b075b4cbd78acf
+23	1225	7899183637755392	C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CSerial_autogen/mocs_compilation.cpp	75b075b4cbd78acf
+1236	1302	7899183639602585	.qt/rcc/qrc_CSerial_translations.cpp	3acf8fbe0d6de779
+1236	1302	7899183639602585	C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_CSerial_translations.cpp	3acf8fbe0d6de779
+1349	1556	7899183640175578	CMakeFiles/CSerial.dir/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_CSerial_translations.cpp.obj	e2cdf5cc39f0b444
+1302	4645	7899183639735985	CMakeFiles/CSerial.dir/CSerial_autogen/mocs_compilation.cpp.obj	b708c8bc9bec96ae
+1318	4707	7899183639807279	CMakeFiles/CSerial.dir/main.cpp.obj	83e9ba0cd18971fd
+1333	5479	7899183639964230	CMakeFiles/CSerial.dir/serial.cpp.obj	4c2247e7a01b40b4
+5481	5856	7899183681511723	CSerial.exe	fe76e0e49f5f814a

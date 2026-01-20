@@ -1,0 +1,20 @@
+# ninja log v6
+11	155	7899203267113514	C:/Tony/Soft/soft2026/WSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/WSerial_pt_BR.qm	2c69f5b0a423070
+11	155	7899203267113514	WSerial_pt_BR.qm	2c69f5b0a423070
+19	294	7899471988900513	WSerial_autogen/mocs_compilation.cpp	75c39c5c27cacb40
+1132	1193	7899203277382855	C:/Tony/Soft/soft2026/WSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_WSerial_translations.cpp	1f48bd37153d32
+19	294	7899471988900513	WSerial_autogen/timestamp	75c39c5c27cacb40
+19	294	7899471988900513	C:/Tony/Soft/soft2026/WSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/WSerial_autogen/timestamp	75c39c5c27cacb40
+19	294	7899471988900513	C:/Tony/Soft/soft2026/WSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/WSerial_autogen/mocs_compilation.cpp	75c39c5c27cacb40
+1132	1193	7899203277382855	.qt/rcc/qrc_WSerial_translations.cpp	1f48bd37153d32
+1205	1518	7899221992086462	CMakeFiles/WSerial.dir/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_WSerial_translations.cpp.obj	3b51fba766203f37
+1080	4599	7899457992533517	CMakeFiles/WSerial.dir/WSerial_autogen/mocs_compilation.cpp.obj	b8345204fbd1648e
+1082	4628	7899457992553453	CMakeFiles/WSerial.dir/main.cpp.obj	c4b31ec8d34036e5
+295	4565	7899471991670797	CMakeFiles/WSerial.dir/serial.cpp.obj	bde9a0a9e4a7ac8f
+4565	4920	7899472034343737	WSerial.exe	b6d69e388b97cdd
+19	294	7899474289299330	WSerial_autogen/timestamp	75c39c5c27cacb40
+19	294	7899474289299330	WSerial_autogen/mocs_compilation.cpp	75c39c5c27cacb40
+19	294	7899474289299330	C:/Tony/Soft/soft2026/WSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/WSerial_autogen/timestamp	75c39c5c27cacb40
+19	294	7899474289299330	C:/Tony/Soft/soft2026/WSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/WSerial_autogen/mocs_compilation.cpp	75c39c5c27cacb40
+295	4553	7899474292067175	CMakeFiles/WSerial.dir/serial.cpp.obj	bde9a0a9e4a7ac8f
+4553	4904	7899474334653610	WSerial.exe	b6d69e388b97cdd

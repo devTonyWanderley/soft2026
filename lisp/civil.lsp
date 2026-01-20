@@ -1,15 +1,15 @@
 ;|HEADER|;
 
 ;|	PARÂMETROS	|;
-(setq #param-leitura '(("PONTO" "Abrir arquivo de pontos" "C:/2026/Soft/Instâncias/" "pdw")		;	C:\2026\Soft\Instâncias
-		       ("ARESTA" "Abrir arquivo de arestas" "C:/2026/Soft/Instâncias/" "ars")
-		       ("FACE" "Abrir arquivo de faces" "C:/2026/Soft/Instâncias/" "sup")
-		       ("CONTORNO" "Abrir arquivo de faces" "C:/2026/Soft/Instâncias/" "con")
+(setq #param-leitura '(("PONTO" "Abrir arquivo de pontos" "C:/Tony/Soft/soft2026/Instâncias/" "pdw")		;	C:\2026\Soft\Instâncias C:/Tony/Soft/soft2026/Instâncias/
+		       ("ARESTA" "Abrir arquivo de arestas" "C:/Tony/Soft/soft2026/Instâncias/" "ars")
+		       ("FACE" "Abrir arquivo de faces" "C:/Tony/Soft/soft2026/Instâncias/" "sup")
+		       ("CONTORNO" "Abrir arquivo de faces" "C:/Tony/Soft/soft2026/Instâncias/" "con")
 		       )
-      #param-export '(("PONTO" "Salvar arquivo de pontos" "C:/2026/Soft/Instâncias/" "pdw")
-		      ("ARESTA" "Salvar arquivo de arestas" "C:/2026/Soft/Instâncias/" "ars")
-		      ("FACE" "Salvar arquivo de faces" "C:/2026/Soft/Instâncias/" "sup")
-		      ("CONTORNO" "Abrir arquivo de faces" "C:/2026/Soft/Instâncias/" "con")
+      #param-export '(("PONTO" "Salvar arquivo de pontos" "C:/Tony/Soft/soft2026/Instâncias/" "pdw")
+		      ("ARESTA" "Salvar arquivo de arestas" "C:/Tony/Soft/soft2026/Instâncias/" "ars")
+		      ("FACE" "Salvar arquivo de faces" "C:/Tony/Soft/soft2026/Instâncias/" "sup")
+		      ("CONTORNO" "Abrir arquivo de faces" "C:/Tony/Soft/soft2026/Instâncias/" "con")
 		      )
       #param-desenho '(("PONTO" "_Pontos" 0.1)
 		       ("ARESTA" "_Arestas")
@@ -26,7 +26,7 @@
     )
   (setq i nil)
   (while (nth (setq i (if i (1+ i) 0)) #includes)
-    (load (strcat "C:/2026/Soft/lisp/" (nth i #includes)))
+    (load (strcat "C:/Tony/Soft/soft2026/lisp/" (nth i #includes)))		;	C:/Tony/Soft/soft2026/lisp
     )
   (princ "\nEventuais repetições no desenho:\n\tPontos:")
   (setq #pontos (civil:ler-pontos-do-desenho))

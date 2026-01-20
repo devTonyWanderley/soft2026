@@ -1,0 +1,22 @@
+# ninja log v6
+10	138	7896694401328317	revisa_pt_BR.qm	8d558596efa723bd
+10	138	7896694401328317	C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisa_pt_BR.qm	8d558596efa723bd
+21	1162	7896694410445100	revisa_autogen/timestamp	8abf5ff87fa8d400
+21	1162	7896694410445100	revisa_autogen/mocs_compilation.cpp	8abf5ff87fa8d400
+21	1162	7896694410445100	C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisa_autogen/timestamp	8abf5ff87fa8d400
+21	1162	7896694410445100	C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisa_autogen/mocs_compilation.cpp	8abf5ff87fa8d400
+1189	1248	7896694412355229	.qt/rcc/qrc_revisa_translations.cpp	a84624132b22efdb
+1189	1248	7896694412355229	C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_revisa_translations.cpp	a84624132b22efdb
+1310	1767	7896694413164769	CMakeFiles/revisa.dir/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_revisa_translations.cpp.obj	11ff5f706f1548bf
+1248	4065	7896694412542405	CMakeFiles/revisa.dir/revisa_autogen/mocs_compilation.cpp.obj	b5a2169672278410
+1263	4174	7896694412613395	CMakeFiles/revisa.dir/main.cpp.obj	f110ea050eb00f6
+1279	4197	7896694412771715	CMakeFiles/revisa.dir/mainwindow.cpp.obj	cf2c74d8d8fb392c
+1295	4915	7896694412871805	CMakeFiles/revisa.dir/C_/Tony/Soft/soft2026/Banco2/tipos.cpp.obj	779858ae3a916639
+4916	5279	7896694449220931	revisa.exe	136461f1305480b8
+17	316	7896721591970014	revisa_autogen/timestamp	8abf5ff87fa8d400
+17	316	7896721591970014	revisa_autogen/mocs_compilation.cpp	8abf5ff87fa8d400
+17	316	7896721591970014	C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisa_autogen/timestamp	8abf5ff87fa8d400
+17	316	7896721591970014	C:/Tony/Soft/soft2026/revisa/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/revisa_autogen/mocs_compilation.cpp	8abf5ff87fa8d400
+317	2958	7896721595050152	CMakeFiles/revisa.dir/mainwindow.cpp.obj	cf2c74d8d8fb392c
+335	3503	7896721595150727	CMakeFiles/revisa.dir/C_/Tony/Soft/soft2026/Banco2/tipos.cpp.obj	779858ae3a916639
+3503	3860	7896721626912369	revisa.exe	136461f1305480b8

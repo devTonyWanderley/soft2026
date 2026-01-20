@@ -1,15 +1,15 @@
 ;|HEADER|;
 
 ;|	PARÂMETROS	|;
-(setq #param-leitura '(("PONTO" "Abrir arquivo de pontos" "C:/2026/Soft/Inst/" "pnt")
-		       ("ARESTA" "Abrir arquivo de arestas" "C:/2026/Soft/Inst/" "ars")
-		       ("FACE" "Abrir arquivo de faces" "C:/2026/Soft/Inst/" "sup")
-		       ("CONTORNO" "Abrir arquivo de faces" "C:/2026/Soft/Inst/" "con")
+(setq #param-leitura '(("PONTO" "Abrir arquivo de pontos" "C:/2026/Soft/Instâncias/" "pdw")		;	C:\2026\Soft\Instâncias
+		       ("ARESTA" "Abrir arquivo de arestas" "C:/2026/Soft/Instâncias/" "ars")
+		       ("FACE" "Abrir arquivo de faces" "C:/2026/Soft/Instâncias/" "sup")
+		       ("CONTORNO" "Abrir arquivo de faces" "C:/2026/Soft/Instâncias/" "con")
 		       )
-      #param-export '(("PONTO" "Salvar arquivo de pontos" "C:/2026/Soft/Inst/" "pnt")
-		      ("ARESTA" "Salvar arquivo de arestas" "C:/2026/Soft/Inst/" "ars")
-		      ("FACE" "Salvar arquivo de faces" "C:/2026/Soft/Inst/" "sup")
-		      ("CONTORNO" "Abrir arquivo de faces" "C:/2026/Soft/Inst/" "con")
+      #param-export '(("PONTO" "Salvar arquivo de pontos" "C:/2026/Soft/Instâncias/" "pdw")
+		      ("ARESTA" "Salvar arquivo de arestas" "C:/2026/Soft/Instâncias/" "ars")
+		      ("FACE" "Salvar arquivo de faces" "C:/2026/Soft/Instâncias/" "sup")
+		      ("CONTORNO" "Abrir arquivo de faces" "C:/2026/Soft/Instâncias/" "con")
 		      )
       #param-desenho '(("PONTO" "_Pontos" 0.1)
 		       ("ARESTA" "_Arestas")
@@ -134,6 +134,21 @@
       )
     (alert "#pontos vazia")
     )
+  (princ)
+  )
+
+;;;--ADEQUAÇÃO 18-01-26--
+(defun c:lança-pdw( / lt i)
+  (setvar "pdmode" 35)
+  (setvar "pdsize" (caddr (assoc "PONTO" #param-desenho)))
+  (if (setq lt (civil:ler-arquivo "PONTO"))
+    (while (nth (setq i (if i (1+ i) 0)) lt)
+      (civil:faz-point (civil:ler-ln-pdw (nth i lt)) (cadr (assoc "PONTO" #param-desenho)) nil)
+      )
+    (princ "erro ao lançar pontos")
+    )
+  (civil:ler-pontos-do-desenho)
+  (civil:ler-arestas-do-desenho)
   (princ)
   )
 

@@ -1,0 +1,11 @@
+set(lupdate_project_file "C:/Tony/Soft/soft2026/Leica0701/CMakeLists.txt")
+set(lupdate_translations "C:/Tony/Soft/soft2026/Leica0701/Leica0701_pt_BR.ts")
+set(lupdate_include_paths "")
+set(lupdate_sources "")
+set(lupdate_subproject_count 1)
+
+set(lupdate_subproject1_source_dir "C:/Tony/Soft/soft2026/Leica0701")
+set(lupdate_subproject1_include_paths "C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/Leica0701_autogen/include;C:/Qt/6.10.1/mingw_64/include/QtCore;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/mkspecs/win32-g++;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/include/QtWidgets;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/include/QtGui;C:/Qt/6.10.1/mingw_64/include;C:/Qt/6.10.1/mingw_64/include/QtSerialPort;C:/Qt/6.10.1/mingw_64/include")
+set(lupdate_subproject1_sources "C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/Leica0701_autogen/mocs_compilation.cpp;main.cpp;leica.cpp;leica.h;leica.ui;../Banco1/geral.h;../Banco1/geral.cpp;C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/.qt/rcc/Leica0701_translations.qrc;C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/Leica0701_pt_BR.qm;C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/.qt/rcc/qrc_Leica0701_translations.cpp;C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/Leica0701_autogen/include/ui_leica.h;C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/Leica0701_autogen/timestamp;C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/Leica0701_pt_BR.qm.rule;C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/.qt/rcc/qrc_Leica0701_translations.cpp.rule;C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/Leica0701_autogen/timestamp.rule")
+set(lupdate_subproject1_excluded "")
+set(lupdate_subproject1_autogen_dir "C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Release/Leica0701_autogen")

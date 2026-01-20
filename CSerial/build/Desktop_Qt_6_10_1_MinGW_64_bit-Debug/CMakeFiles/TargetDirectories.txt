@@ -1,0 +1,13 @@
+C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMakeFiles/CSerial.dir
+C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMakeFiles/CSerial_lupdate.dir
+C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMakeFiles/update_translations.dir
+C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMakeFiles/CSerial_lrelease.dir
+C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMakeFiles/release_translations.dir
+C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
+C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
+C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMakeFiles/list_install_components.dir
+C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMakeFiles/install.dir
+C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMakeFiles/install/local.dir
+C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMakeFiles/install/strip.dir
+C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMakeFiles/CSerial_autogen_timestamp_deps.dir
+C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMakeFiles/CSerial_autogen.dir

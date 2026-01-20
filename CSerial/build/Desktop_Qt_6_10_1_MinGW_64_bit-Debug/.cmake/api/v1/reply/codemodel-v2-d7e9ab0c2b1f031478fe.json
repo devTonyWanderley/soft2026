@@ -1,0 +1,115 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-85741173d5337305fdb7.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "CSerial",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "CSerial::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-CSerial-Debug-d532f56084fd9ffee4d1.json",
+					"name" : "CSerial",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "CSerial_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-CSerial_autogen-Debug-f1d11c813f792c62a0c9.json",
+					"name" : "CSerial_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "CSerial_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-CSerial_autogen_timestamp_deps-Debug-89ad2d0e270ee7f050fb.json",
+					"name" : "CSerial_autogen_timestamp_deps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "CSerial_lrelease::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-CSerial_lrelease-Debug-d0efa160fa4c053d9d5b.json",
+					"name" : "CSerial_lrelease",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "CSerial_lupdate::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-CSerial_lupdate-Debug-66de3474515f700ffd3d.json",
+					"name" : "CSerial_lupdate",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "release_translations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-release_translations-Debug-853c9ce1889564bcacee.json",
+					"name" : "release_translations",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "update_translations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-update_translations-Debug-a4be0db15e0e14e97a60.json",
+					"name" : "update_translations",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Tony/Soft/soft2026/CSerial/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug",
+		"source" : "C:/Tony/Soft/soft2026/CSerial"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

@@ -1,0 +1,115 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-848b093c935a26d5a576.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Leica0701",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Leica0701::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Leica0701-Debug-3e2f602e5187b01dc64c.json",
+					"name" : "Leica0701",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Leica0701_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Leica0701_autogen-Debug-9dd970a4203547308c3b.json",
+					"name" : "Leica0701_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Leica0701_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Leica0701_autogen_timestamp_deps-Debug-745c822b0c9e12732cf2.json",
+					"name" : "Leica0701_autogen_timestamp_deps",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Leica0701_lrelease::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Leica0701_lrelease-Debug-c9353015f4f878eaa166.json",
+					"name" : "Leica0701_lrelease",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Leica0701_lupdate::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Leica0701_lupdate-Debug-0484f8486c745a48b999.json",
+					"name" : "Leica0701_lupdate",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "release_translations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-release_translations-Debug-985e21597b0c12e54d7f.json",
+					"name" : "release_translations",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "update_translations::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-update_translations-Debug-5547e0cf5181f01177b7.json",
+					"name" : "update_translations",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Tony/Soft/soft2026/Leica0701/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug",
+		"source" : "C:/Tony/Soft/soft2026/Leica0701"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

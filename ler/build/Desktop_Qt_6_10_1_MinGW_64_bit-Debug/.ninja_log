@@ -1,0 +1,26 @@
+# ninja log v6
+18	711	7902886186710217	ler_pt_BR.qm	c9ff3ed886b83933
+18	295	7902886535230963	C:/Tony/Soft/soft2026/ler/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/ler_autogen/timestamp	5f26cda9af32b580
+18	711	7902886186710217	C:/Tony/Soft/soft2026/ler/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/ler_pt_BR.qm	c9ff3ed886b83933
+18	295	7902886535230963	ler_autogen/timestamp	5f26cda9af32b580
+1389	1607	7902886195590599	C:/Tony/Soft/soft2026/ler/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_ler_translations.cpp	47cd592682bdf5a4
+18	295	7902886535230963	ler_autogen/mocs_compilation.cpp	5f26cda9af32b580
+18	295	7902886535230963	C:/Tony/Soft/soft2026/ler/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/ler_autogen/mocs_compilation.cpp	5f26cda9af32b580
+1389	1607	7902886195590599	.qt/rcc/qrc_ler_translations.cpp	47cd592682bdf5a4
+1651	1858	7902886196060846	CMakeFiles/ler.dir/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_ler_translations.cpp.obj	d8ad13365ee5241
+1607	5101	7902886195748317	CMakeFiles/ler.dir/ler_autogen/mocs_compilation.cpp.obj	63e9b5c038876ec1
+1621	5173	7902886195799426	CMakeFiles/ler.dir/main.cpp.obj	d023998f24a9087b
+296	3902	7902886538093655	CMakeFiles/ler.dir/mainwindow.cpp.obj	c91dbd11588a9c50
+3903	4261	7902886574154602	ler.exe	83c52207e7618665
+10	35	7902885280922943	CMakeFiles/clean.additional	baedbe210acaa455
+35	45	7902885281180489	clean	577b940aee94fbd7
+19	1817	7902891848428633	ler_autogen/timestamp	5f26cda9af32b580
+19	1817	7902891848428633	ler_autogen/mocs_compilation.cpp	5f26cda9af32b580
+19	1817	7902891848428633	C:/Tony/Soft/soft2026/ler/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/ler_autogen/timestamp	5f26cda9af32b580
+19	1817	7902891848428633	C:/Tony/Soft/soft2026/ler/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/ler_autogen/mocs_compilation.cpp	5f26cda9af32b580
+1878	2563	7902891850324153	CMakeFiles/ler.dir/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_ler_translations.cpp.obj	ed0e121f0bcb5159
+1819	5758	7902891849812383	CMakeFiles/ler.dir/ler_autogen/mocs_compilation.cpp.obj	1314508ff127a6fc
+1834	5767	7902891849962869	CMakeFiles/ler.dir/main.cpp.obj	f237b3a02ec4e061
+1849	5867	7902891850102835	CMakeFiles/ler.dir/mainwindow.cpp.obj	5dcf8b8aee616a4
+1864	6207	7902891850259099	CMakeFiles/ler.dir/C_/Tony/Soft/soft2026/Banco3/cfgcom.cpp.obj	638f55fb32566503
+6208	6643	7902891893701463	ler.exe	a58be1f849b9053f

@@ -18,6 +18,18 @@
 	)
   )
 
+;;;--ADEQUAÇÃO 18-01-26--
+(defun civil:ler-ln-pdw(arg)
+  (list
+    (civil:norma_tx (substr arg 1 16))
+    (civil:norma_tx (substr arg 17 16))
+    (/ (atof (substr arg 45 12)) 10000.0)
+    (/ (atof (substr arg 33 12)) 10000.0)
+    (/ (atof (substr arg 59 12)) 10000.0)
+    )
+  )
+;;;-------------------------
+
 (defun civil:ler-ln-contorno(arg / i r)
   (while (nth (setq i (if i (1+ i) 0)) arg)
     (setq r (cons (civil:norma_tx (nth i arg)) r))

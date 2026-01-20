@@ -1,0 +1,14 @@
+# ninja log v6
+11	156	7900346293325900	com130126_pt_BR.qm	79b88f165c0bf196
+19	340	7900354133422169	com130126_autogen/mocs_compilation.cpp	66354f7bc9c924e
+19	340	7900354133422169	C:/Tony/Soft/soft2026/com130126/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/com130126_autogen/timestamp	66354f7bc9c924e
+11	156	7900346293325900	C:/Tony/Soft/soft2026/com130126/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/com130126_pt_BR.qm	79b88f165c0bf196
+1242	4113	7900346304188718	CMakeFiles/com130126.dir/main.cpp.obj	24f3edb282df3551
+19	340	7900354133422169	com130126_autogen/timestamp	66354f7bc9c924e
+19	340	7900354133422169	C:/Tony/Soft/soft2026/com130126/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/com130126_autogen/mocs_compilation.cpp	66354f7bc9c924e
+1163	1225	7900346303924308	.qt/rcc/qrc_com130126_translations.cpp	f155f7a4f620b80d
+1163	1225	7900346303924308	C:/Tony/Soft/soft2026/com130126/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_com130126_translations.cpp	f155f7a4f620b80d
+1275	1484	7900346304629470	CMakeFiles/com130126.dir/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qrc_com130126_translations.cpp.obj	f2ddc1b2cd9ce7cf
+1226	3980	7900346304146997	CMakeFiles/com130126.dir/com130126_autogen/mocs_compilation.cpp.obj	19c9622738d19960
+341	3696	7900354136633746	CMakeFiles/com130126.dir/serial.cpp.obj	74b5af48ef70b1d9
+3696	4001	7900354170180760	com130126.exe	9abfacb05768c93c
