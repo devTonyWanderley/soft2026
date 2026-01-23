@@ -62,6 +62,9 @@ public:
     trHor(QWidget *parent = nullptr);
     ~trHor();
 
+private slots:
+    void on_pbOpera_clicked();
+
 private:
     Ui::trHor *ui;
     QByteArray buffer;
@@ -75,9 +78,25 @@ private:
                  QString dir = "C:\\2026\\Soft\\Instâncias\\",
                  QString filtro = "todos (*.*)");
     bool parsePontos();
+    bool parsePontos1();
     bool parseArestas();
+    bool parseArestas1();
     bool parseTrhs();
 
     void geraFaces();
+
+    Ponto getPonto(const QString id);
+
+    void coefOmega(const Face f, const double xp, const double yp, double &w0, double &w1, double &w2);
+
+    double det3x3(double A[3][3]);  //  testado
+
+    bool PontoInFace_(const Face f, const double x, const double y);
+
+    Face getFaceDeP(const double x, const double y);
+
+    void coefPlano(const Face f, double &a, double &b, double &c, double &d);
+
+    double cotaDoPonto(const Face f, const double x, const double y);
 };
 #endif // TRHOR_H
