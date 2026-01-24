@@ -1,5 +1,6 @@
 #include "revTipos.h"
 #include <QDebug>
+#include <QFile>
 
 Eigen::Vector2d SegmentoHorizontal::calcularCentro() const
 {
@@ -281,4 +282,61 @@ void Corredor::consolidarEstaqueamentoLongitudinal()
         perfilFinal.emplace_back(s, z);
     }
     vertical.pontos = std::move(perfilFinal);
+}
+
+QString ExportEngine::formatarValor(double val, int largura)
+{
+    // Multiplica por 10.000 para décimo de milímetro
+    long long valorInt = static_cast<long long>(std::round(val * 10000.0));
+    // Formata com zeros à esquerda: %1 = valor, largura, base 10, preenchimento '0'
+    return QString("%1").arg(valorInt, largura, 10, QChar('0')).right(largura);
+}
+
+QString ExportEngine::formatarTexto(QString txt, int largura)
+{
+    return txt.leftJustified(largura, ' ').left(largura);
+}
+
+bool ExportEngine::salvarFixo(const QString& caminho,
+                              const std::vector<std::map<QString, QString>>& dados,
+                              const std::vector<ColunaExport>& colunas)
+{
+    QFile arquivo(caminho);
+    if (!arquivo.open(QIODevice::WriteOnly | QIODevice::Text)) return false;
+
+    QTextStream out(&arquivo);
+    for (const auto& linha : dados)
+    {
+        QString linhaFormatada = "";
+        for (const auto& col : colunas)
+        {
+            linhaFormatada += linha.at(col.titulo);
+        }
+        out << linhaFormatada << "\n";
+    }
+    return true;
+}
+
+void Corredor::exportarDados(const QString& caminho, Camada tipo)
+{
+    std::vector<std::map<QString, QString>> linhas;
+
+    // Supondo que estamos exportando o Perfil consolidado
+    for (const auto& p : vertical.pontos)
+    {
+        std::map<QString, QString> linha;
+        linha["NOME"] = ExportEngine::formatarTexto("ESTACA", 16);
+        linha["VALOR"] = ExportEngine::formatarValor(p.estaca, 12);
+        linha["NOME2"] = ExportEngine::formatarTexto("COTA_Z", 16);
+        linha["VALOR2"] = ExportEngine::formatarValor(p.cota, 12);
+        linhas.push_back(linha);
+    }
+
+    // Define o layout uma única vez
+    std::vector<ColunaExport> layout = {
+        {"NOME", 16, false}, {"VALOR", 12, true},
+        {"NOME2", 16, false}, {"VALOR2", 12, true}
+    };
+
+    ExportEngine::salvarFixo(caminho, linhas, layout);
 }

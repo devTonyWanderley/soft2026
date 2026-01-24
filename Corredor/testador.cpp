@@ -2,6 +2,7 @@
 #include "ui_testador.h"
 #include "../Banco/importengine.h"
 
+/*
 void rodarTesteArquitetura() {
     qDebug() << "--- Iniciando Teste de Importação Completa (Pontos + Arestas) ---";
 
@@ -91,6 +92,53 @@ void rodarTesteArquitetura() {
         }
     }
 }
+*/
+
+void rodarTesteArquitetura() {
+    qDebug() << "--- INICIANDO PROCESSAMENTO: TERRENO NATURAL ---";
+    GerenciadorDeArquivos gerenciador;
+    Corredor corredor;
+
+    // 1. Importação e Malha (Mesmo fluxo validado)
+    ParametrosLayout pPdw; // ... (configuração 16/12 caracteres e escala 10000)
+    pPdw.config.larguraFixa = true;
+    pPdw.config.fatorEscala = 10000.0; // Décimos de milímetro
+    // Nomes devem ser EXATAMENTE os que o ImportEngine usa
+    pPdw.config.mapaColunas["ID"]  = {0, 16};
+    pPdw.config.mapaColunas["ATR"] = {16, 16};
+    pPdw.config.mapaColunas["Y"]   = {32, 12};
+    pPdw.config.mapaColunas["X"]   = {44, 12};
+    pPdw.config.mapaColunas["Z"]   = {56, 12};
+    ImportadorTexto proc;
+    gerenciador.adicionarAFila("C:/2026/Soft/Instâncias/Pontos.pdw", Camada::Primitiva, pPdw);
+    gerenciador.executarBatch(&proc);
+    gerenciador.vincularArestasARS(Camada::Primitiva, "C:/2026/Soft/Instâncias/Arestas.ars");
+    gerenciador.reconstruirFaces(Camada::Primitiva);
+
+    // 2. Importação do Eixo (Lisp -> C++)
+    ParametrosLayout pEixo; // ... (configuração 15/15/12)
+    pEixo.config.larguraFixa = true;
+    // Certifique-se de que estas chaves são idênticas às usadas no .cpp
+    pEixo.config.mapaColunas["X"]     = {0, 15};
+    pEixo.config.mapaColunas["Y"]     = {15, 15};
+    pEixo.config.mapaColunas["BULGE"] = {30, 12};
+
+    auto dadosEixo = ImportEngine::importarEixo("C:/2026/Soft/Instâncias/tracado.txt", pEixo.config);
+    corredor.horizontal = EixoHorizontal(dadosEixo, 0.0);
+
+    // 3. Geração e Consolidação do Perfil
+    qDebug() << "Gerando interseções e consolidando estacas...";
+    Superficie* terreno = gerenciador.obterSuperficie(Camada::Primitiva);
+    corredor.gerarPerfilLongitudinal(*terreno);     // Acidentes geográficos
+    corredor.consolidarEstaqueamentoLongitudinal(); // Regras de 5m, 10m e 20m
+
+    // 4. Exportação do Perfil Natural
+    qDebug() << "Exportando Perfil Natural (Décimos de Milímetro)...";
+    corredor.exportarDados("C:/2026/Soft/Instâncias/perfil_primitiva.txt", Camada::Primitiva);
+
+    qDebug() << "--- ETAPA PERFIL CONCLUÍDA ---";
+}
+
 
 testador::testador(QWidget *parent): QMainWindow(parent), ui(new Ui::testador)
 {

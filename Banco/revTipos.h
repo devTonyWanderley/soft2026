@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <Eigen/Dense>
+#include <map>
 
 enum class TipoElemento
 {
@@ -150,6 +151,8 @@ struct ColunaExport
 class EixoHorizontal
 {
 public:
+    // ADICIONE ESTE: Construtor padrão (vazio)
+    EixoHorizontal() : estacaPartida(0.0) {}
     std::vector<SegmentoHorizontal> trechos;
     double estacaPartida;
 
@@ -318,11 +321,14 @@ public:
 class Corredor
 {
 public:
+    // Força o compilador a gerar o construtor padrão
+    Corredor() = default;
     EixoHorizontal horizontal;
     PerfilLongitudinal vertical;
     std::vector<SecaoTransversal> secoes;
     void gerarPerfilLongitudinal(const Superficie& terreno);
     void consolidarEstaqueamentoLongitudinal();
+    void exportarDados(const QString& caminho, Camada tipo);
 
     // Métodos que você construirá em casa:
     void processar(const Superficie& terreno);
