@@ -29,11 +29,7 @@ struct Ponto
     double z;
 
     // Construtor otimizado
-    Ponto(const QString& id = "",
-          const QString& atr = "",
-          double x = 0.0,
-          double y = 0.0,
-          double z = 0.0)
+    Ponto(const QString& id = "", const QString& atr = "", double x = 0.0, double y = 0.0, double z = 0.0)
         : nome(id), atributo(atr), x(x), y(y), z(z)
     {}
 
@@ -42,6 +38,51 @@ struct Ponto
     {
         return Eigen::Vector3d(x, y, z);
     }
+};
+
+struct PontoIntersecaoTIN
+{
+    double estaca;           // Posição longitudinal no eixo
+    double offset;           // Distância lateral (0.0 no perfil, != 0.0 na seção)
+    double cota;             // Z interpolado na TIN
+    Eigen::Vector3d global;  // X, Y, Z absolutos (essencial para conferência)
+
+    // Construtor auxiliar para facilitar o uso no código
+    PontoIntersecaoTIN(double s = 0.0, double off = 0.0, double z = 0.0, const Eigen::Vector3d& g = Eigen::Vector3d::Zero())
+        : estaca(s), offset(off), cota(z), global(g)
+    {}
+};
+
+struct BBox {
+    double minX, maxX, minY, maxY;
+
+    BBox() : minX(1e15), maxX(-1e15), minY(1e15), maxY(-1e15) {}
+
+    void atualizar(double x, double y)
+    {
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+    }
+
+    bool intercepta(const BBox& outra) const
+    {
+        return !(outra.minX > maxX || outra.maxX < minX || outra.minY > maxY || outra.maxY < minY);
+    }
+};
+
+// Representa uma linha bruta vinda do arquivo (ex: uma linha do PDW)
+// que será convertida em um segmento geométrico real.
+struct DadosBrutos
+{
+    Ponto p1;
+    Ponto p2;
+    double bulge;
+
+    DadosBrutos(const Ponto& ini = Ponto(), const Ponto& fim = Ponto(), double b = 0.0)
+        : p1(ini), p2(fim), bulge(b) {}
 };
 
 struct SegmentoHorizontal
@@ -67,19 +108,21 @@ struct SegmentoHorizontal
         // 1. Distância da Corda usando Eigen
         double corda = (pFim.pos() - pIni.pos()).head<2>().norm();
 
-        if (std::abs(bulge) < 1e-6) {
+        if (std::abs(bulge) < 1e-6)
+        {
             tipo = TipoElemento::Reta;
             raio = 0.0;
             delta = 0.0;
             comprimento = corda;
-        } else {
+        }
+        else
+        {
             tipo = TipoElemento::Curva;
             // 2. Fórmulas de Bulge para Curva
             delta = 4.0 * std::atan(std::abs(bulge));
-            raio = (corda / 2.0) / std::sin(delta / 2.0);
+            raio = (corda / (2.0 * std::sin(delta / 2.0)));
             comprimento = raio * delta;
         }
-
         estacaFinal = estacaInicial + comprimento;
     }
 
@@ -88,19 +131,34 @@ struct SegmentoHorizontal
     {
         return std::abs(bulge) > 1e-6;
     }
+
+    Eigen::Vector2d calcularCentro() const;
+
+    BBox calcularBBox() const;
+
+    std::vector<PontoIntersecaoTIN> interceptarArco(const Ponto& a1, const Ponto& a2) const;
+    std::vector<PontoIntersecaoTIN> interceptarReta(const Ponto& a1, const Ponto& a2) const;
 };
 
-class EixoHorizontal {
+struct ColunaExport
+{
+    QString titulo;
+    int largura;
+    bool isNumero;
+};
+
+class EixoHorizontal
+{
+public:
     std::vector<SegmentoHorizontal> trechos;
     double estacaPartida;
 
-public:
     // Construtor que recebe os dados brutos e "monta" o quebra-cabeça
-    EixoHorizontal(const std::vector<DadosBrutos>& entrada, double estacaZero = 0.0)
-        : estacaPartida(estacaZero)
+    EixoHorizontal(const std::vector<DadosBrutos>& entrada, double estacaZero = 0.0): estacaPartida(estacaZero)
     {
         double estacaAtual = estacaPartida;
-        for (const auto& d : entrada) {
+        for (const auto& d : entrada)
+        {
             // Cria o segmento e ele já se auto-calcula
             trechos.emplace_back(d.p1, d.p2, d.bulge, estacaAtual);
             // Atualiza a estaca para o próximo segmento
@@ -108,22 +166,6 @@ public:
         }
     }
 };
-
-
-/*
-class EixoHorizontal {
-    std::vector<SegmentoHorizontal> trechos;
-
-public:
-    // O grande desafio: achar a coordenada (X,Y) de uma estaca qualquer
-    Ponto calcularPosicaoNaEstaca(double estacaAlvo)
-    {
-        // 1. Localiza em qual segmento a estaca está
-        // 2. Se for reta: interpolação linear simples
-        // 3. Se for curva: interpolação circular usando trigono/Eigen
-    }
-};
-*/
 
 struct ArestaTIN
 {
@@ -182,6 +224,7 @@ struct Superficie
     Camada tipo;          // Identificador lógico para cálculos de volume
 
     std::vector<Ponto> pontos; // Todos os vértices desta superfície
+    std::vector<ArestaTIN> arestas;
     std::vector<Face> faces;   // A malha TIN que conecta os pontos
 
     // Metadados calculados uma única vez
@@ -213,11 +256,7 @@ struct PerfilLongitudinal
     double extensaoTotal;
 
     // Função Crítica: Retorna a cota exata em uma estaca qualquer por interpolação linear
-    double cotaNaEstaca(double s) const
-    {
-        // Busca binária (std::lower_bound) para encontrar o intervalo e interpolar
-        // Retorna a cota Z interpolada
-    }
+    double cotaNaEstaca(double s) const;
 };
 
 struct PIV
@@ -263,12 +302,27 @@ struct SecaoTransversal
     {}
 };
 
+class ExportEngine
+{
+public:
+    // Rotina genérica para exportar qualquer lista de dados em formato fixo
+    static bool salvarFixo(const QString& caminho,
+                           const std::vector<std::map<QString, QString>>& linhas,
+                           const std::vector<ColunaExport>& layout);
+
+    // Utilitários de formatação (o "coração" da parametrização)
+    static QString formatarValor(double val, int largura);
+    static QString formatarTexto(QString txt, int largura);
+};
+
 class Corredor
 {
 public:
     EixoHorizontal horizontal;
     PerfilLongitudinal vertical;
     std::vector<SecaoTransversal> secoes;
+    void gerarPerfilLongitudinal(const Superficie& terreno);
+    void consolidarEstaqueamentoLongitudinal();
 
     // Métodos que você construirá em casa:
     void processar(const Superficie& terreno);

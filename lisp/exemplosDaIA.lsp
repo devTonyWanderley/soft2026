@@ -56,7 +56,7 @@
       (setq obj (vlax-ename->vla-object ent)
             i 0
             fim (vlax-curve-getEndParam ent)
-            arquivo (open "C:/Tony/Soft/soft2026/Instâncias/tracado.txt" "w"))
+            arquivo (open "C:/2026/Soft/Instâncias/Tracado.txt" "w"))
       
       ;; Escreve o ponto de partida (X Y) para o Qt saber onde o estaqueamento começa
       (setq p1 (vlax-curve-getPointAtParam ent 0))
@@ -72,10 +72,10 @@
               azim (angle p1 p2))
         
         (if (equal bulge 0.0 1e-6)
-          (write-line (strcat "RETA  " (printf-fixed comp 10 2) " 0.00       " (printf-fixed azim 10 4)) arquivo)
+          (write-line (strcat "RETA  " (printf-fixed comp 10 4) " 0.00       " (printf-fixed azim 10 4)) arquivo)
           (progn
             (setq raio (abs (/ (/ (distance p1 p2) 2.0) (sin (* 2.0 (atan bulge))))))
-            (write-line (strcat "CURVA " (printf-fixed comp 10 2) " " (printf-fixed raio 10 2) " " (printf-fixed azim 10 4)) arquivo)
+            (write-line (strcat "CURVA " (printf-fixed comp 10 4) " " (printf-fixed raio 10 4) " " (printf-fixed azim 10 4)) arquivo)
           )
         )
         (setq i (1+ i))
@@ -83,6 +83,62 @@
       (close arquivo)
       (princ "\nArquivo exportado com sucesso em C:/temp/tracado.txt")
     )
+  )
+  (princ)
+)
+
+(defun c:ExpEixo (/ ent sel file path i pt next-pt bulge x-str y-str b-str line)
+  (vl-load-com)
+  
+  ;; 1. Seleção da Polilinha
+  (setq sel (entsel "\nSelecione a LWPOLYLINE do eixo: "))
+  (if (and sel (= (cdr (assoc 0 (entget (setq ent (car sel))))) "LWPOLYLINE"))
+    (progn
+      ;; 2. Definição do arquivo de saída
+      (setq path (getfiled "Salvar Eixo Horizontal" "" "txt" 1))
+      (if path
+        (progn
+          (setq file (open path "w"))
+          (setq i 0)
+          (setq obj (vlax-ename->vla-object ent))
+          (setq coords (vlax-get obj 'Coordinates))
+          (setq num-verts (/ (length coords) 2))
+
+          (while (< i num-verts)
+            ;; Extração do Ponto Atual (X Y)
+            (setq pt (list (nth (* i 2) coords) (nth (1+ (* i 2)) coords)))
+            
+            ;; Extração do Bulge do segmento atual
+	    ;; Se for o último vértice, não existe bulge (forçamos 0.0)
+            (if (< i (1- num-verts))
+              (setq bulge (vla-getbulge obj i))
+              (setq bulge 0.0)
+            )
+
+            ;; 3. Formatação com Comprimento Fixo e Decimais
+            ;; X e Y: 15 caracteres total, 4 decimais
+            ;; Bulge: 12 caracteres total, 6 decimais
+            (setq x-str (rtos (car pt) 2 4))
+            (setq y-str (rtos (cadr pt) 2 4))
+            (setq b-str (rtos bulge 2 6))
+
+            ;; Montagem da linha com preenchimento (Padding)
+            (setq line (strcat 
+              (setq x-str (substr (strcat x-str "               ") 1 15))
+              (setq y-str (substr (strcat y-str "               ") 1 15))
+              (setq b-str (substr (strcat b-str "            ") 1 12))
+            ))
+
+            (write-line line file)
+            (setq i (1+ i))
+          )
+          
+          (close file)
+          (princ (strcat "\nSucesso! " (itoa i) " segmentos exportados."))
+        )
+      )
+    )
+    (princ "\nErro: Selecione uma LWPOLYLINE válida.")
   )
   (princ)
 )

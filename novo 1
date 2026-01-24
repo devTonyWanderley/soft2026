@@ -1,0 +1,156 @@
+c:lança-pontos-2d	->	civil:lança-pontos	->	civil:ler-arquivo				#1
+											->	civil:ler-ln-ponto				#2
+											->	civil:faz-point					#3
+											->	civil:ler-pontos-do-desenho		#4
+
+#1	->	civil:get_na
+
+#2	->	civil:norma_tx
+
+#3	->	QGraphicsScene
+
+	--SUGERIDOS PELA IA PRA IMPORTAR ARQUIVO--
+
+// 1. Definição Paramétrica (Pode vir de um .json ou .ini no futuro)
+struct ParametrosLayout {
+    QString extensao;
+    char delimitador; // 0 se for largura fixa
+    std::map<QString, std::pair<int, int>> campos; // "X" -> {inicio, largura}
+};
+
+// 2. Interface Abstrata para qualquer fonte de dados
+class IProvedorPontos {
+public:
+    virtual ~IProvedorPontos() = default;
+    virtual std::vector<Ponto> processar(const QString& caminho, const ParametrosLayout& params) = 0;
+};
+
+// 3. O Gerenciador agora trabalha com uma "Lista de Tarefas"
+class GerenciadorDeArquivos {
+    struct TarefaImportacao {
+        QString caminho;
+        Camada camadaDestino;
+        ParametrosLayout params;
+    };
+
+    std::vector<TarefaImportacao> filaDeTrabalho;
+
+public:
+    void adicionarAFila(QString path, Camada cam, ParametrosLayout p) {
+        filaDeTrabalho.push_back({path, cam, p});
+    }
+
+    // Rotina parametrizada que processa a lista completa
+    void executarBatch(IProvedorPontos* processador) {
+        for (const auto& tarefa : filaDeTrabalho) {
+            auto pontos = processador->processar(tarefa.caminho, tarefa.params);
+            // Aqui alimentamos a Superficie correspondente no repositório
+            vincularPontosASuperficie(tarefa.camadaDestino, std::move(pontos));
+        }
+        filaDeTrabalho.clear();
+    }
+};
+
+---------------------------------------------------------------------------------------------------
+/* 
+   - [x] Importação de Pontos (.pdw)
+   - [ ] Importação de Arestas (.ars) -> FOCO ATUAL
+*/
+
+std::vector<ArestaTIN> ImportEngine::importarArestas(const QString& caminho) {
+    std::vector<ArestaTIN> listaArestas;
+    QFile arquivo(caminho);
+    if (!arquivo.open(QIODevice::ReadOnly | QIODevice::Text)) return listaArestas;
+
+    QTextStream in(&arquivo);
+    while (!in.atEnd()) {
+        QString linha = in.readLine().trimmed();
+        if (linha.isEmpty()) continue;
+
+        // Supondo largura fixa (ex: 16 caracteres para cada ID)
+        // Ou split por espaços se for variável
+        QStringList partes = linha.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+        
+        if (partes.size() >= 2) {
+            int id1 = partes[0].toInt();
+            int id2 = partes[1].toInt();
+            listaArestas.emplace_back(id1, id2);
+        }
+    }
+    return listaArestas;
+}
+
+void GerenciadorDeArquivos::vincularArestas(Camada tipo, const QString& caminhoArs) {
+    Superficie* s = obterSuperficie(tipo);
+    if (!s) return;
+
+    // 1. Criar um mapa rápido: ID do ponto -> Índice no vetor
+    std::map<int, int> mapaIdParaIndice;
+    for (int i = 0; i < (int)s->pontos.size(); ++i) {
+        mapaIdParaIndice[s->pontos[i].nome.toInt()] = i;
+    }
+
+    // 2. Ler o arquivo .ars
+    auto arestasBrutas = ImportEngine::importarArestas(caminhoArs);
+
+    // 3. Converter IDs para Índices e salvar na superfície
+    for (const auto& abruta : arestasBrutas) {
+        if (mapaIdParaIndice.count(abruta.iIni) && mapaIdParaIndice.count(abruta.iFim)) {
+            s->arestas.emplace_back(mapaIdParaIndice[abruta.iIni], 
+                                    mapaIdParaIndice[abruta.iFim]);
+        }
+    }
+}
+
+----------------------------------------------------------------------------------------------------------
+void GerenciadorDeArquivos::vincularArestasARS(Camada tipo, const QString& caminhoArs) {
+    Superficie* s = obterSuperficie(tipo);
+    if (!s) return;
+
+    // 1. Criar o Mapa de Tradução Temporário
+    // Chave: Nome do Ponto (ID no ARS) -> Valor: Posição no vetor (Índice)
+    std::map<QString, int> dicionarioIds;
+    for (int i = 0; i < (int)s->pontos.size(); ++i) {
+        dicionarioIds[s->pontos[i].nome] = i;
+    }
+
+    // 2. Abrir o arquivo .ars
+    QFile arquivo(caminhoArs);
+    if (!arquivo.open(QIODevice::ReadOnly | QIODevice::Text)) return;
+
+    QTextStream in(&arquivo);
+    while (!in.atEnd()) {
+        QString linha = in.readLine();
+        // Exemplo de formato: "329             330" (ajustado para largura fixa)
+        QString idIni = linha.mid(0, 16).trimmed();
+        QString idFim = linha.mid(16, 16).trimmed();
+
+        // 3. Tradução Imediata: O ID entra, o Índice sai
+        if (dicionarioIds.count(idIni) && dicionarioIds.count(idFim)) {
+            // Criamos a aresta já com os índices 0, 1, 2...
+            s->arestas.emplace_back(dicionarioIds[idIni], dicionarioIds[idFim]);
+        }
+    }
+    // Ao sair da função, dicionarioIds é destruído. Memória limpa!
+}
+
+---------------------------------------------------------------------------------------
+1. O Fluxo de Dados (Pipeline) A polilinha do CAD é uma sequência de vértices onde o Bulge (arco)
+de um segmento é armazenado no vértice que o inicia. O fluxo será:Entidade DXF/Lisp \(\rightarrow \)
+struct DadosBrutos \(\rightarrow \) SegmentoHorizontal \(\rightarrow \) EixoHorizontal.
+
+2. Classes e Responsabilidades ParserLWPolyline (Novo):Função: Ler a sequência de coordenadas
+\((x,y)\) e o valor do código 42 (bulge).Desafio: O último vértice de uma polilinha não tem "próximo".
+A rotina deve iterar até \(N-1\) para criar os segmentos.
+SegmentoHorizontal (Ajuste de Geometria):Você já tem a fórmula do Bulge: \(\Delta =4\cdot \arctan
+(\text{bulge})\).Próxima implementação: Adicionar o cálculo do Centro da Curva e os vetores de Tangência
+(entrada e saída), essenciais para o estaqueamento perpendicular.EixoHorizontal (O Maestro):Estaqueamento:
+Criar uma função Ponto NaEstaca(double estaca).Interpolação: Se a estaca cai em uma reta, usa interpolação
+linear; se cai em curva, usa trigonometria circular a partir do centro calculado. 3. Checklist de Implementação
+(Próximo Turno) Criar ImportadorProjeto: Novo arquivo .h/.cpp para lidar com as definições do eixo.
+Método gerarEstacas(double intervalo): Função que gera uma lista de coordenadas \((x,y)\) a cada 20m.Integração
+com a TIN: O evento onde, para cada estaca gerada, buscamos em qual Face da malha ela "pisa" para obter a cota Z. 
+
+4. Resumo de Fórmulas para o Código Ao retomar, usaremos estas relações para a classe SegmentoHorizontal: Corda
+(\(C\)): Distância entre \(P_{ini}\) e \(P_{fim}\).Flecha (\(f\)): \(\frac{C}{2}\cdot \text{bulge}\).Raio (\(R\)):
+\(\frac{(C/2)^{2}+f^{2}}{2f}\). 
