@@ -139,6 +139,11 @@ struct SegmentoHorizontal
 
     std::vector<PontoIntersecaoTIN> interceptarArco(const Ponto& a1, const Ponto& a2) const;
     std::vector<PontoIntersecaoTIN> interceptarReta(const Ponto& a1, const Ponto& a2) const;
+    Eigen::Vector2d calcularPerpendicularLocal(double s) const;
+    Eigen::Vector2d getXYNaEstaca(double s) const;
+    // ADICIONE ESTA LINHA:
+    static std::vector<PontoIntersecaoTIN> interceptarRetaManual(const Ponto& p1, const Ponto& p2,
+                                                                 const Ponto& a1, const Ponto& a2);
 };
 
 struct ColunaExport
@@ -168,6 +173,9 @@ public:
             estacaAtual = trechos.back().estacaFinal;
         }
     }
+    Eigen::Vector2d getPerpendicularNaEstaca(double s) const;
+    // Adicione esta linha:
+    Eigen::Vector2d getXYNaEstaca(double s) const;
 };
 
 struct ArestaTIN
@@ -230,12 +238,16 @@ struct Superficie
     std::vector<ArestaTIN> arestas;
     std::vector<Face> faces;   // A malha TIN que conecta os pontos
 
+    // NOVO: Lista sequencial de índices que formam o polígono do contorno
+    std::vector<int> indicesContorno;
+
     // Metadados calculados uma única vez
     double areaTotal;
     double volumeAcumulado;
 
     Superficie(QString n = "", Camada t = Camada::Primitiva): nome(n), tipo(t), areaTotal(0.0), volumeAcumulado(0.0)
     {}
+    void gerarContornoSequencial();
 };
 
 struct PontoPerfil
@@ -291,19 +303,30 @@ struct PontoSecao
 struct SecaoTransversal
 {
     double estaca;
-    Ponto centroEixo;           // Coordenada global (X,Y,Z) vinda do Traçado Horizontal/Vertical
-    double azimute;             // Direção normal para projeção dos offsets
+    Ponto centroEixo;           // X,Y da estaca e Z (do Perfil Natural ou Greide)
+    double azimute;             // Azimute da PERPENDICULAR (direção do offset positivo)
 
-    std::vector<PontoSecao> terreno; // Pontos extraídos da TIN
+    // Limites dinâmicos encontrados pelo Raycasting no Contorno
+    double limiteEsq;           // Offset máximo negativo (ex: -15.42)
+    double limiteDir;           // Offset máximo positivo (ex: +22.10)
+
+    std::vector<PontoSecao> terreno; // Pontos (Offset, Z) onde a seção cruza as arestas TIN
     std::vector<PontoSecao> projeto; // Pontos do gabarito (Pista, Taludes)
 
-    // Resultados de cálculo para a DMT
     double areaCorte;
     double areaAterro;
 
-    SecaoTransversal(double s = 0.0) : estaca(s), areaCorte(0.0), areaAterro(0.0)
+    SecaoTransversal(double s = 0.0)
+        : estaca(s), limiteEsq(0.0), limiteDir(0.0), areaCorte(0.0), areaAterro(0.0)
     {}
+
+    // Auxiliar para obter a direção vetorial da seção (Direita)
+    Eigen::Vector2d vetorDiretor() const {
+        double rad = (90.0 - azimute) * (M_PI / 180.0); // Converte azimute para ângulo trigonométrico
+        return Eigen::Vector2d(cos(rad), sin(rad));
+    }
 };
+
 
 class ExportEngine
 {
@@ -333,6 +356,7 @@ public:
     // Métodos que você construirá em casa:
     void processar(const Superficie& terreno);
     double calcularVolumeTotal(); // Integração das áreas das seções
+    void gerarAmostragemTIN(const Superficie& terreno, double larguraBusca);
 };
 
 

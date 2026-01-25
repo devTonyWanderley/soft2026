@@ -340,3 +340,191 @@ void Corredor::exportarDados(const QString& caminho, Camada tipo)
 
     ExportEngine::salvarFixo(caminho, linhas, layout);
 }
+
+// No revTipos.h / .cpp
+void Superficie::gerarContornoSequencial()
+{
+    // 1. Mapa para contar ocorrências de cada par de pontos (Arestas)
+    std::map<std::pair<int, int>, int> contadorArestas;
+
+    for (const auto& f : faces)
+    {
+        // Para cada face, garantimos uma ordem (v0-v1, v1-v2, v2-v0)
+        auto registrar = [&](int a, int b)
+        {
+            int pMin = std::min(a, b);
+            int pMax = std::max(a, b);
+            contadorArestas[{pMin, pMax}]++;
+        };
+        registrar(f.v[0], f.v[1]);
+        registrar(f.v[1], f.v[2]);
+        registrar(f.v[2], f.v[0]);
+    }
+
+    // 2. Extrair apenas arestas que aparecem uma única vez (Borda)
+    std::map<int, std::vector<int>> adjContorno;
+    for (auto const& [par, count] : contadorArestas)
+    {
+        if (count == 1)
+        {
+            adjContorno[par.first].push_back(par.second);
+            adjContorno[par.second].push_back(par.first);
+        }
+    }
+
+    // 3. "Costurar" os índices em ordem sequencial
+    this->indicesContorno.clear();
+    if (adjContorno.empty()) return;
+
+    int atual = adjContorno.begin()->first;
+    int inicio = atual;
+    int anterior = -1;
+
+    do
+    {
+        indicesContorno.push_back(atual);
+        const auto& vizinhos = adjContorno[atual];
+        int proximo = (vizinhos[0] == anterior && vizinhos.size() > 1) ? vizinhos[1] : vizinhos[0];
+        anterior = atual;
+        atual = proximo;
+    }
+    while (atual != inicio && indicesContorno.size() < adjContorno.size());
+}
+
+// No revTipos.cpp
+Eigen::Vector2d EixoHorizontal::getPerpendicularNaEstaca(double s) const {
+    // Busca o segmento que contém a estaca s
+    for (const auto& seg : trechos) {
+        if (s >= seg.estacaInicial && s <= seg.estacaFinal) {
+            return seg.calcularPerpendicularLocal(s);
+        }
+    }
+    // Caso a estaca esteja fora (extrapolação), usa o último ou primeiro trecho
+    if (s < estacaPartida) return trechos.front().calcularPerpendicularLocal(s);
+    return trechos.back().calcularPerpendicularLocal(s);
+}
+
+// No revTipos.cpp
+Eigen::Vector2d SegmentoHorizontal::calcularPerpendicularLocal(double s) const
+{
+    if (tipo == TipoElemento::Reta)
+    {
+        // Vetor Diretor Unitário
+        Eigen::Vector2d vDir = (Eigen::Vector2d(pFim.x, pFim.y) -
+                                Eigen::Vector2d(pIni.x, pIni.y)).normalized();
+        // Giro 90° para a direita: (x, y) -> (y, -x)
+        return Eigen::Vector2d(vDir.y(), -vDir.x());
+    }
+    else
+    {
+        // Lógica de Curva: Vetor Radial
+        Eigen::Vector2d centro = calcularCentro();
+        Eigen::Vector2d pEstaca = getXYNaEstaca(s); // Função de posição no arco
+        Eigen::Vector2d radial = (pEstaca - centro).normalized();
+
+        // Se bulge > 0 (curva à esquerda), o radial aponta para a direita (fora)
+        // Se bulge < 0 (curva à direita), o radial aponta para a direita (dentro)
+        return (bulge > 0) ? radial : -radial;
+    }
+}
+
+// Necessário para o passo anterior
+Eigen::Vector2d SegmentoHorizontal::getXYNaEstaca(double s) const
+{
+    double ds = s - estacaInicial;
+    if (tipo == TipoElemento::Reta)
+    {
+        Eigen::Vector2d dir = (Eigen::Vector2d(pFim.x, pFim.y) -
+                               Eigen::Vector2d(pIni.x, pIni.y)).normalized();
+        return Eigen::Vector2d(pIni.x, pIni.y) + dir * ds;
+    }
+    else
+    {
+        Eigen::Vector2d centro = calcularCentro();
+        double angIni = atan2(pIni.y - centro.y(), pIni.x - centro.x());
+        // Delta ângulo = comprimento / raio
+        double deltaAng = ds / raio;
+        double angAtual = (bulge > 0) ? (angIni + deltaAng) : (angIni - deltaAng);
+
+        return centro + Eigen::Vector2d(cos(angAtual), sin(angAtual)) * raio;
+    }
+}
+
+void Corredor::gerarAmostragemTIN(const Superficie& terreno, double larguraBusca) {
+    this->secoes.clear();
+
+    for (const auto& pPerfil : vertical.pontos) {
+        SecaoTransversal secao(pPerfil.estaca);
+
+        // 1. GEOMETRIA 2D: Posicionamento no Eixo
+        Eigen::Vector2d posEixo = horizontal.getXYNaEstaca(pPerfil.estaca);
+        Eigen::Vector2d nPerp = horizontal.getPerpendicularNaEstaca(pPerfil.estaca);
+
+        // Define a "Régua Transversal" (pEsq e pDir) - Sintaxe corrigida
+        Ponto pEsq("", "", posEixo.x() - nPerp.x() * larguraBusca, posEixo.y() - nPerp.y() * larguraBusca);
+        Ponto pDir("", "", posEixo.x() + nPerp.x() * larguraBusca, posEixo.y() + nPerp.y() * larguraBusca);
+
+        // 2. 3ª COORDENADA: Centro do Eixo com Cota Z do Perfil
+        secao.centroEixo = Ponto("", "", posEixo.x(), posEixo.y(), pPerfil.cota);
+
+        // 3. CRUZAMENTO COM A MALHA (Cramer)
+        for (const auto& aresta : terreno.arestas) {
+            auto inters = SegmentoHorizontal::interceptarRetaManual(
+                pEsq, pDir, terreno.pontos[aresta.iIni], terreno.pontos[aresta.iFim]
+                );
+
+            for (const auto& pt : inters) {
+                Eigen::Vector2d vInt(pt.global.x(), pt.global.y());
+                // Produto Escalar para converter Global -> Offset Local
+                double offset = (vInt - posEixo).dot(nPerp);
+                secao.terreno.emplace_back(offset, pt.cota, "TIN");
+            }
+        }
+
+        // 4. AJUSTE DO CONTAINER: Ordenação (Esquerda -> Direita)
+        std::sort(secao.terreno.begin(), secao.terreno.end(), [](const PontoSecao& a, const PontoSecao& b) {
+            return a.offset < b.offset;
+        });
+
+        this->secoes.push_back(secao);
+    }
+}
+std::vector<PontoIntersecaoTIN> SegmentoHorizontal::interceptarRetaManual(const Ponto& p1, const Ponto& p2,
+                                                                          const Ponto& a1, const Ponto& a2) {
+    std::vector<PontoIntersecaoTIN> resultados;
+
+    double x1 = p1.x, y1 = p1.y;
+    double x2 = p2.x, y2 = p2.y;
+    double x3 = a1.x, y3 = a1.y;
+    double x4 = a2.x, y4 = a2.y;
+
+    double den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+    if (std::abs(den) < 1e-9) return resultados; // Paralelas
+
+    double t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
+    double u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den;
+
+    if (t >= 0.0 && t <= 1.0 && u >= 0.0 && u <= 1.0) {
+        double zInt = a1.z + u * (a2.z - a1.z);
+        PontoIntersecaoTIN pt;
+        pt.global = Eigen::Vector3d(x1 + t * (x2 - x1), y1 + t * (y2 - y1), zInt);
+        pt.cota = zInt;
+        resultados.push_back(pt);
+    }
+    return resultados;
+}
+
+Eigen::Vector2d EixoHorizontal::getXYNaEstaca(double s) const {
+    // 1. Percorre os trechos do eixo
+    for (const auto& seg : trechos) {
+        // 2. Verifica se a estaca 's' pertence a este intervalo
+        if (s >= seg.estacaInicial && s <= seg.estacaFinal) {
+            return seg.getXYNaEstaca(s); // Chama a matemática do segmento
+        }
+    }
+
+    // 3. Caso de segurança: estaca fora dos limites (extrapolação)
+    if (trechos.empty()) return Eigen::Vector2d(0, 0);
+    if (s < estacaPartida) return trechos.front().getXYNaEstaca(trechos.front().estacaInicial);
+    return trechos.back().getXYNaEstaca(trechos.back().estacaFinal);
+}
