@@ -1,38 +1,29 @@
 cmake_minimum_required(VERSION 3.19)
-project(Corredor LANGUAGES CXX)
+project(Corredor1 LANGUAGES CXX)
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets LinguistTools)
 
 qt_standard_project_setup()
 
-qt_add_executable(Corredor
+qt_add_executable(Corredor1
     WIN32 MACOSX_BUNDLE
     main.cpp
-    testador.cpp
-    testador.h
-    testador.ui
-    ../Banco/revTipos.h
-    ../Banco/revTipos.cpp
-    ../Banco/importengine.h
-    ../Banco/importengine.cpp
-    ../BancoCorredor/GeometriaBase.h
-    ../BancoCorredor/GeometriaBase.cpp
-    ../BancoCorredor/Topologia.h
-    ../BancoCorredor/Topologia.cpp
-    ../BancoCorredor/Alinhamento.h
+    terrapleno.cpp
+    terrapleno.h
+    terrapleno.ui
     ../BancoCorredor/Alinhamento.cpp
-    ../BancoCorredor/Engenharia.h
     ../BancoCorredor/Engenharia.cpp
-    ../BancoCorredor/StorageProvider.h
+    ../BancoCorredor/GeometriaBase.cpp
     ../BancoCorredor/StorageProvider.cpp
+    ../BancoCorredor/Topologia.cpp
 )
 
 qt_add_translations(
-    TARGETS Corredor
-    TS_FILES Corredor_pt_BR.ts
+    TARGETS Corredor1
+    TS_FILES Corredor1_pt_BR.ts
 )
 
-target_link_libraries(Corredor
+target_link_libraries(Corredor1
     PRIVATE
         Qt::Core
         Qt::Widgets
@@ -40,18 +31,17 @@ target_link_libraries(Corredor
 
 include(GNUInstallDirs)
 
-install(TARGETS Corredor
+install(TARGETS Corredor1
     BUNDLE  DESTINATION .
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
 qt_generate_deploy_app_script(
-    TARGET Corredor
+    TARGET Corredor1
     OUTPUT_SCRIPT deploy_script
     NO_UNSUPPORTED_PLATFORM_ERROR
 )
-
 include_directories("C:/2026/Soft/eigen-5.0.0")
-
+include_directories("C:/2026/Soft/BancoCorredor")
 install(SCRIPT ${deploy_script})

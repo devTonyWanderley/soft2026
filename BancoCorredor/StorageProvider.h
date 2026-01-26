@@ -1,0 +1,30 @@
+#pragma once
+#include "Alinhamento.h"
+#include <QString>
+#include <vector>
+#include <map>
+
+// Centraliza as configurações de Layout (Largura Fixa, Escala, etc)
+struct FileLayout
+{
+    bool larguraFixa = true;
+    double escala = 1.0;
+    std::map<QString, std::pair<int, int>> colunas;
+};
+
+class StorageProvider
+{
+public:
+    // Métodos estáticos para leitura (Input)
+    static std::vector<Ponto> lerPontos(const QString& path, const FileLayout& layout);
+    static std::vector<DadosBrutos> lerEixo(const QString& path, const FileLayout& layout);
+    static void lerArestas(const QString& path, Superficie& superf);
+
+    static QString formatarValor(double val, int largura);
+    static QString formatarTexto(QString txt, int largura);
+
+    // Métodos para escrita (Output) - Parametrizado como discutimos
+    static bool exportarFixo(const QString& path,
+                             const std::vector<std::map<QString, QString>>& dados,
+                             const std::vector<std::pair<QString, int>>& layout);
+};

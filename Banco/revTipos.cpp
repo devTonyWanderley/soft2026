@@ -489,6 +489,7 @@ void Corredor::gerarAmostragemTIN(const Superficie& terreno, double larguraBusca
         this->secoes.push_back(secao);
     }
 }
+
 std::vector<PontoIntersecaoTIN> SegmentoHorizontal::interceptarRetaManual(const Ponto& p1, const Ponto& p2,
                                                                           const Ponto& a1, const Ponto& a2) {
     std::vector<PontoIntersecaoTIN> resultados;
