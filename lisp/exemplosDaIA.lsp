@@ -56,7 +56,7 @@
       (setq obj (vlax-ename->vla-object ent)
             i 0
             fim (vlax-curve-getEndParam ent)
-            arquivo (open "C:/2026/Soft/Instâncias/Tracado.txt" "w"))
+            arquivo (open "C:/Tony/NovaSede/Tracado.txt" "w"))
       
       ;; Escreve o ponto de partida (X Y) para o Qt saber onde o estaqueamento começa
       (setq p1 (vlax-curve-getPointAtParam ent 0))
@@ -139,6 +139,54 @@
       )
     )
     (princ "\nErro: Selecione uma LWPOLYLINE válida.")
+  )
+  (princ)
+)
+
+(defun c:DesPerfil (/ file line est cota pts)
+  (setq file (open (getfiled "Selecione o arquivo de PERFIL" "" "txt" 0) "r"))
+  (if file
+    (progn
+      (while (setq line (read-line file))
+        (if (> (strlen line) 28)
+          (progn
+            ;; Lê estaca (0-12) e cota (28-40) convertendo de décimos de mm para metros
+            (setq est (/ (atof (substr line 1 12)) 10000.0))
+            (setq cota (/ (atof (substr line 29 12)) 10000.0))
+            (setq pts (cons (list est (* cota 10.0)) pts))
+          )
+        )
+      )
+      (close file)
+      (entmake (append (list '(0 . "LWPOLYLINE") '(100 . "AcDbEntity") '(100 . "AcDbPolyline") 
+                             (cons 90 (length pts)) '(70 . 0))
+                       (mapcar '(lambda (p) (cons 10 p)) (reverse pts))))
+      (command "_.zoom" "_e")
+    )
+  )
+  (princ)
+)
+
+(defun c:DesSecao (/ file line off cota pts)
+  (setq file (open (getfiled "Selecione o arquivo da SEÇÃO" "" "txt" 0) "r"))
+  (if file
+    (progn
+      (while (setq line (read-line file))
+        (if (> (strlen line) 20)
+          (progn
+            ;; Lê offset (0-12) e cota (12-24) convertendo para metros
+            (setq off (/ (atof (substr line 1 12)) 10000.0))
+            (setq cota (/ (atof (substr line 13 12)) 10000.0))
+            (setq pts (cons (list off cota) pts))
+          )
+        )
+      )
+      (close file)
+      (entmake (append (list '(0 . "LWPOLYLINE") '(100 . "AcDbEntity") '(100 . "AcDbPolyline") 
+                             (cons 90 (length pts)) '(70 . 0))
+                       (mapcar '(lambda (p) (cons 10 p)) (reverse pts))))
+      (princ "\nSeção desenhada com sucesso.")
+    )
   )
   (princ)
 )

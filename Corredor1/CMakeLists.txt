@@ -42,6 +42,6 @@ qt_generate_deploy_app_script(
     OUTPUT_SCRIPT deploy_script
     NO_UNSUPPORTED_PLATFORM_ERROR
 )
-include_directories("C:/2026/Soft/eigen-5.0.0")
-include_directories("C:/2026/Soft/BancoCorredor")
+include_directories("C:/Tony/Soft/soft2026/eigen-5.0.0")
+include_directories("C:/Tony/Soft/soft2026/BancoCorredor")
 install(SCRIPT ${deploy_script})

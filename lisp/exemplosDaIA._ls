@@ -104,12 +104,16 @@
           (setq coords (vlax-get obj 'Coordinates))
           (setq num-verts (/ (length coords) 2))
 
-          (while (< i (1- num-verts))
+          (while (< i num-verts)
             ;; Extração do Ponto Atual (X Y)
             (setq pt (list (nth (* i 2) coords) (nth (1+ (* i 2)) coords)))
             
             ;; Extração do Bulge do segmento atual
-            (setq bulge (vla-getbulge obj i))
+	    ;; Se for o último vértice, não existe bulge (forçamos 0.0)
+            (if (< i (1- num-verts))
+              (setq bulge (vla-getbulge obj i))
+              (setq bulge 0.0)
+            )
 
             ;; 3. Formatação com Comprimento Fixo e Decimais
             ;; X e Y: 15 caracteres total, 4 decimais

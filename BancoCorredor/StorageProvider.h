@@ -27,4 +27,7 @@ public:
     static bool exportarFixo(const QString& path,
                              const std::vector<std::map<QString, QString>>& dados,
                              const std::vector<std::pair<QString, int>>& layout);
+    static double calcularDistanciaAoContorno(const Eigen::Vector2d& origem,
+                                              const Eigen::Vector2d& direcao,
+                                              const Superficie& terreno);
 };

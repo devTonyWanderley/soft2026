@@ -129,3 +129,48 @@ void Corredor::gerarAmostragemTIN(const Superficie& terreno, double larguraBusca
         this->secoes.push_back(secao);
     }
 }
+
+// Lógica para estender até o limite e salvar arquivos individuais
+void Corredor::gerarESalvarSecoesIndividuais(const Superficie& terreno, const QString& dirBase, const QString& raiz) {
+    for (const auto& pPerfil : vertical.pontos) {
+        SecaoTransversal secao(pPerfil.estaca);
+        Eigen::Vector2d posEixo = horizontal.getXYNaEstaca(pPerfil.estaca);
+        Eigen::Vector2d nPerp = horizontal.getPerpendicularNaEstaca(pPerfil.estaca);
+
+        // 1. Encontrar limites no CONTORNO (Seção estendida)
+        double dEsq = StorageProvider::calcularDistanciaAoContorno(posEixo, -nPerp, terreno);
+        double dDir = StorageProvider::calcularDistanciaAoContorno(posEixo, nPerp, terreno);
+
+        // 2. Criar a Régua de Varredura exata
+        Ponto pEsq("", "", posEixo.x() - nPerp.x() * dEsq, posEixo.y() - nPerp.y() * dEsq);
+        Ponto pDir("", "", posEixo.x() + nPerp.x() * dDir, posEixo.y() + nPerp.y() * dDir);
+
+        // 3. Interseção com as ArestasTIN
+        for (const auto& aresta : terreno.arestas) {
+            auto inters = SegmentoHorizontal::interceptarRetaManual(pEsq, pDir, terreno.pontos[aresta.iIni], terreno.pontos[aresta.iFim]);
+            for (const auto& pt : inters) {
+                double offset = (Eigen::Vector2d(pt.global.x(), pt.global.y()) - posEixo).dot(nPerp);
+                secao.terreno.emplace_back(offset, pt.cota, "TIN");
+            }
+        }
+
+        // 4. Ordenar (Esq -> Dir)
+        std::sort(secao.terreno.begin(), secao.terreno.end(), [](const PontoSecao& a, const PontoSecao& b) {
+            return a.offset < b.offset;
+        });
+
+        // 5. EXPORTAR ARQUIVO INDIVIDUAL (Otimizado para Lisp)
+        // Nome: Projeto_SEC_00000.txt (formatado para facilitar busca no CAD)
+        QString nomeArquivo = dirBase + raiz + "_SEC_" + QString::number(pPerfil.estaca, 'f', 0).rightJustified(5, '0') + ".txt";
+
+        std::vector<std::map<QString, QString>> dadosSec;
+        for (const auto& pt : secao.terreno) {
+            std::map<QString, QString> linha;
+            linha["OFF"] = StorageProvider::formatarValor(pt.offset, 12);
+            linha["Z"]   = StorageProvider::formatarValor(pt.cota, 12);
+            dadosSec.push_back(linha);
+        }
+        std::vector<std::pair<QString, int>> lay = {{"OFF", 12}, {"Z", 12}};
+        StorageProvider::exportarFixo(nomeArquivo, dadosSec, lay);
+    }
+}

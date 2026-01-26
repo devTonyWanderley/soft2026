@@ -39,4 +39,5 @@ public:
     void processar(const Superficie& terreno);
     double calcularVolumeTotal();
     void gerarAmostragemTIN(const Superficie& terreno, double larguraBusca);
+    void gerarESalvarSecoesIndividuais(const Superficie& terreno, const QString& dirBase, const QString& raiz);
 };

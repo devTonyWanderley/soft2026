@@ -122,3 +122,43 @@ QString StorageProvider::formatarTexto(QString txt, int largura) {
     // Justifica à esquerda com espaços
     return txt.leftJustified(largura, ' ').left(largura);
 }
+
+double StorageProvider::calcularDistanciaAoContorno(const Eigen::Vector2d& origem,
+                                                    const Eigen::Vector2d& direcao,
+                                                    const Superficie& terreno) {
+    double menorT = 1e15; // "Infinito"
+    bool atingiu = false;
+
+    // Se o contorno não foi gerado, retorna um valor padrão (ex: 50m) para não travar
+    if (terreno.indicesContorno.size() < 3) return 50.0;
+
+    for (size_t i = 0; i < terreno.indicesContorno.size(); ++i) {
+        // Pega os pontos do segmento de contorno (P1 -> P2)
+        int idx1 = terreno.indicesContorno[i];
+        int idx2 = terreno.indicesContorno[(i + 1) % terreno.indicesContorno.size()];
+
+        Eigen::Vector2d p1 = terreno.pontos[idx1].pos().head<2>();
+        Eigen::Vector2d p2 = terreno.pontos[idx2].pos().head<2>();
+        Eigen::Vector2d vCont = p2 - p1;
+
+        // Cramer: origem + t*direcao = p1 + u*vCont
+        // Det = (dir.x * -vCont.y) - (dir.y * -vCont.x)
+        double det = -direcao.x() * vCont.y() + direcao.y() * vCont.x();
+
+        if (std::abs(det) < 1e-9) continue; // Paralelos
+
+        double t = (vCont.x() * (origem.y() - p1.y()) - vCont.y() * (origem.x() - p1.x())) / det;
+        double u = (direcao.x() * (origem.y() - p1.y()) - direcao.y() * (origem.x() - p1.x())) / det;
+
+        // Se t > 0 (frente do raio) e 0 <= u <= 1 (dentro do segmento da borda)
+        if (t > 0.001 && u >= 0.0 && u <= 1.0) {
+            if (t < menorT) {
+                menorT = t;
+                atingiu = true;
+            }
+        }
+    }
+
+    // Se não atingiu o contorno (ponto fora?), retorna 50m como segurança
+    return atingiu ? menorT : 50.0;
+}
