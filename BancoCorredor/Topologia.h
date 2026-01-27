@@ -1,6 +1,7 @@
 #pragma once
 #include "GeometriaBase.h"
 #include <map>
+#include <list>
 
 struct ArestaTIN {
     int iIni, iFim; // Índices no vetor de pontos (mais rápido que IDs de texto)
@@ -19,6 +20,8 @@ struct Superficie {
     std::vector<ArestaTIN> arestas;
     std::vector<Face> faces;
     std::vector<int> indicesContorno; // A "costura" que você criou
+    std::list<int> iContorno;
+    void reconstruirFaces();
 
     void gerarContornoSequencial();
 

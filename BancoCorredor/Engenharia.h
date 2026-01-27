@@ -32,3 +32,5 @@ public:
 
     // Futuro: Métodos de Volume entrarão aqui
 };
+
+double buscarCotaVizinha(const std::vector<PontoPerfil>& lista, size_t idx);
