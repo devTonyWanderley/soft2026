@@ -155,24 +155,27 @@ Eigen::Vector2d SegmentoHorizontal::getXYNaEstaca(double s) const
     }
 }
 
-std::vector<PontoIntersecaoTIN> SegmentoHorizontal::interceptarRetaManual(const Ponto& p1, const Ponto& p2, const Ponto& a1, const Ponto& a2)
-{
+std::vector<PontoIntersecaoTIN> SegmentoHorizontal::interceptarRetaManual(const Ponto& p1, const Ponto& p2, const Ponto& a1, const Ponto& a2) {
     std::vector<PontoIntersecaoTIN> resultados;
+
     double x1 = p1.x, y1 = p1.y;
     double x2 = p2.x, y2 = p2.y;
     double x3 = a1.x, y3 = a1.y;
     double x4 = a2.x, y4 = a2.y;
+
     double den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
     if (std::abs(den) < 1e-9) return resultados;
+
     double t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
     double u = -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den;
-    if (t >= 0.0 && t <= 1.0 && u >= 0.0 && u <= 1.0)
-    {
-        double zInt = a1.z + u * (a2.z - a1.z);
-        PontoIntersecaoTIN pt;
-        pt.global = Eigen::Vector3d(x1 + t * (x2 - x1), y1 + t * (y2 - y1), zInt);
-        pt.cota = zInt;
-        resultados.push_back(pt);
+
+    if (t >= 0.0 && t <= 1.0 && u >= 0.0 && u <= 1.0) {
+        PontoIntersecaoTIN res;
+        // Se p1 e p2 forem do eixo, 't' ajuda na estaca.
+        // Se forem da seção transversal, 't' ajuda no offset.
+        res.cota = a1.z + u * (a2.z - a1.z);
+        res.global = Eigen::Vector3d(x1 + t * (x2 - x1), y1 + t * (y2 - y1), res.cota);
+        resultados.push_back(res);
     }
     return resultados;
 }
@@ -204,39 +207,4 @@ Eigen::Vector2d EixoHorizontal::getXYNaEstaca(double s) const {
     if (s < estacaPartida) return trechos.front().getXYNaEstaca(estacaPartida);
 
     return trechos.back().getXYNaEstaca(trechos.back().estacaFinal);
-}
-
-/*
-Eigen::Vector2d SegmentoHorizontal::getXYNaEstaca(double s) const
-{
-    double ds = s - estacaInicial;
-    if (tipo == TipoElemento::Reta)
-    {
-        Eigen::Vector2d dir = (Eigen::Vector2d(pFim.x, pFim.y) - Eigen::Vector2d(pIni.x, pIni.y)).normalized();
-        return Eigen::Vector2d(pIni.x, pIni.y) + dir * ds;
-    }
-    else
-    {
-        Eigen::Vector2d centro = calcularCentro();
-        double angIni = atan2(pIni.y - centro.y(), pIni.x - centro.x());
-        double deltaAng = ds / raio;
-        double angAtual = (bulge > 0) ? (angIni + deltaAng) : (angIni - deltaAng);
-        return centro + Eigen::Vector2d(cos(angAtual), sin(angAtual)) * raio;
-    }
-}
-*/
-double PerfilLongitudinal::cotaNaEstaca(double s) const
-{
-    if (pontos.empty()) return 0.0;
-    if (s <= pontos.front().estaca) return pontos.front().cota;
-    if (s >= pontos.back().estaca) return pontos.back().cota;
-    auto it = std::lower_bound(pontos.begin(), pontos.end(), s, [](const PontoPerfil& p, double val)
-                               {
-                                   return p.estaca < val;
-                               });
-    if (it == pontos.begin()) return it->cota;
-    const auto& p2 = *it;
-    const auto& p1 = *std::prev(it);
-    double t = (s - p1.estaca) / (p2.estaca - p1.estaca);
-    return p1.cota + t * (p2.cota - p1.cota);
 }

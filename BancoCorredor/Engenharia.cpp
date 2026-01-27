@@ -1,176 +1,146 @@
-//  SecaoTransversal e Corredor
-
 #include "Engenharia.h"
-#include <map>
 #include "StorageProvider.h"
+#include <algorithm>
+#include <cmath>
+#include <map>
+#include <set>
 
-void Corredor::gerarPerfilLongitudinal(const Superficie& terreno)
-{
+#include <QDebug>
+
+// 1. GERAÇÃO DO PERFIL E CONSOLIDAÇÃO DAS ESTACAS
+void Corredor::gerarPerfilEConsolidar(const Superficie& terreno) {
+    //  --RASTREIO--    .................................................
+    qDebug() << "--- DEBUG INÍCIO PERFIL ---";
+    qDebug() << "Arestas na Malha:" << terreno.arestas.size();
+    if(!terreno.pontos.empty())
+        qDebug() << "Exemplo Ponto 0 Z:" << terreno.pontos[0].z;
+    //  .................................................................
     this->vertical.pontos.clear();
-    std::vector<PontoIntersecaoTIN> todasIntersecoes;
-    for (const auto& seg : horizontal.trechos)
-    {
-        BBox boxSeg = seg.calcularBBox();
-        for (const auto& aresta : terreno.arestas)
-        {
-            const Ponto& a1 = terreno.pontos[aresta.iIni];
-            const Ponto& a2 = terreno.pontos[aresta.iFim];
-            BBox boxAresta;
-            boxAresta.atualizar(a1.x, a1.y);
-            boxAresta.atualizar(a2.x, a2.y);
-            if (!boxSeg.intercepta(boxAresta)) continue;
-            std::vector<PontoIntersecaoTIN> pts;
-            if (seg.tipo == TipoElemento::Reta)
-            {
-                pts = seg.interceptarReta(a1, a2);
-            }
-            else
-            {
-                pts = seg.interceptarArco(a1, a2);
-            }
-            todasIntersecoes.insert(todasIntersecoes.end(), pts.begin(), pts.end());
-        }
-    }
-    std::sort(todasIntersecoes.begin(), todasIntersecoes.end(),[](const PontoIntersecaoTIN& a, const PontoIntersecaoTIN& b)
-              {
-                  return a.estaca < b.estaca;
-              });
-    for (const auto& it : todasIntersecoes)
-    {
-        this->vertical.pontos.emplace_back(it.estaca, it.cota);
-    }
-}
+    this->vertical.pontosProjeto.clear();
 
-void Corredor::consolidarEstaqueamentoLongitudinal()
-{
-    std::set<double> estacasMestre;
-    for (const auto& p : vertical.pontos)
-    {
-        estacasMestre.insert(p.estaca);
-    }
-    for (const auto& seg : horizontal.trechos)
-    {
-        estacasMestre.insert(seg.estacaInicial);
-        estacasMestre.insert(seg.estacaFinal);
+    // Mapa para garantir que cada estaca tenha sua cota e tipo
+    // double (estaca) -> pair<cota, tipo>
+    std::map<double, std::pair<double, QString>> perfilCompleto;
+
+    // A. Estacas de Projeto (PC, PT, INT)
+    for (const auto& seg : horizontal.trechos) {
+        double p1 = seg.estacaInicial;
+        double p2 = seg.estacaFinal;
+
+        perfilCompleto[p1] = {0.0, "PC"}; // Cota será preenchida depois
+        perfilCompleto[p2] = {0.0, "PT"};
+
         double passo = (seg.tipo == TipoElemento::Reta) ? 10.0 : 5.0;
-        double s = std::ceil(seg.estacaInicial / passo) * passo;
-        while (s < seg.estacaFinal)
-        {
-            estacasMestre.insert(s);
+        double s = std::ceil(p1 / passo) * passo;
+        if (std::abs(s - p1) < 0.001) s += passo;
+
+        while (s < (p2 - 0.001)) {
+            if ((s - p1) > 2.5 && (p2 - s) > 2.5) {
+                perfilCompleto[s] = {0.0, "INT"};
+            }
             s += passo;
         }
     }
-    std::vector<PontoPerfil> perfilFinal;
-    for (double s : estacasMestre)
-    {
-        double z = vertical.cotaNaEstaca(s);
-        perfilFinal.emplace_back(s, z);
-    }
-    vertical.pontos = std::move(perfilFinal);
-}
+    //  --RASTREIO--    .................................................
+    // Rastreio da Interseção
+    int encontrados = 0;
+    //  .................................................................
 
-void Corredor::exportarDados(const QString& caminho, Camada tipo)
-{
-    std::vector<std::map<QString, QString>> linhas;
-    for (const auto& p : vertical.pontos)
-    {
-        std::map<QString, QString> linha;
-        linha["NOME"] = StorageProvider::formatarTexto("ESTACA", 16);
-        linha["VALOR"] = StorageProvider::formatarValor(p.estaca, 12);
-        linha["NOME2"] = StorageProvider::formatarTexto("COTA_Z", 16);
-        linha["VALOR2"] = StorageProvider::formatarValor(p.cota, 12);
-        linhas.push_back(linha);
-    }
-    /*
-    // Define o layout usando o par {Nome da Chave, Largura da Coluna}
-    std::vector<std::pair<QString, int>> layout = {
-        {"NOME", 16},
-        {"VALOR", 12},
-        {"NOME2", 16},
-        {"VALOR2", 12}
-    };
+    // B. Acidentes Geográficos (Interseção com Arestas)
+    for (const auto& seg : horizontal.trechos) {
+        for (const auto& ar : terreno.arestas) {
+            auto inters = SegmentoHorizontal::interceptarRetaManual(
+                seg.pIni, seg.pFim, terreno.pontos[ar.iIni], terreno.pontos[ar.iFim]);
 
-    StorageProvider::exportarFixo(caminho, linhas, layout);
-
-    */
-    //std::vector<ColunaExport> layout = {{"NOME", 16, false}, {"VALOR", 12, true}, {"NOME2", 16, false}, {"VALOR2", 12, true}};
-
-    std::vector<std::pair<QString, int>> layout = {
-        {"NOME", 16},
-        {"VALOR", 12},
-        {"NOME2", 16},
-        {"VALOR2", 12}
-    };
-    StorageProvider::exportarFixo(caminho, linhas, layout);
-}
-
-void Corredor::gerarAmostragemTIN(const Superficie& terreno, double larguraBusca)
-{
-    this->secoes.clear();
-    for (const auto& pPerfil : vertical.pontos)
-    {
-        SecaoTransversal secao(pPerfil.estaca);
-        Eigen::Vector2d posEixo = horizontal.getXYNaEstaca(pPerfil.estaca);
-        Eigen::Vector2d nPerp = horizontal.getPerpendicularNaEstaca(pPerfil.estaca);
-        Ponto pEsq("", "", posEixo.x() - nPerp.x() * larguraBusca, posEixo.y() - nPerp.y() * larguraBusca);
-        Ponto pDir("", "", posEixo.x() + nPerp.x() * larguraBusca, posEixo.y() + nPerp.y() * larguraBusca);
-        secao.centroEixo = Ponto("", "", posEixo.x(), posEixo.y(), pPerfil.cota);
-        for (const auto& aresta : terreno.arestas)
-        {
-            auto inters = SegmentoHorizontal::interceptarRetaManual(pEsq, pDir, terreno.pontos[aresta.iIni], terreno.pontos[aresta.iFim]);
-            for (const auto& pt : inters)
-            {
-                Eigen::Vector2d vInt(pt.global.x(), pt.global.y());
-                double offset = (vInt - posEixo).dot(nPerp);
-                secao.terreno.emplace_back(offset, pt.cota, "TIN");
-            }
-        }
-        std::sort(secao.terreno.begin(), secao.terreno.end(), [](const PontoSecao& a, const PontoSecao& b){return a.offset < b.offset;});
-        this->secoes.push_back(secao);
-    }
-}
-
-// Lógica para estender até o limite e salvar arquivos individuais
-void Corredor::gerarESalvarSecoesIndividuais(const Superficie& terreno, const QString& dirBase, const QString& raiz) {
-    for (const auto& pPerfil : vertical.pontos) {
-        SecaoTransversal secao(pPerfil.estaca);
-        Eigen::Vector2d posEixo = horizontal.getXYNaEstaca(pPerfil.estaca);
-        Eigen::Vector2d nPerp = horizontal.getPerpendicularNaEstaca(pPerfil.estaca);
-
-        // 1. Encontrar limites no CONTORNO (Seção estendida)
-        double dEsq = StorageProvider::calcularDistanciaAoContorno(posEixo, -nPerp, terreno);
-        double dDir = StorageProvider::calcularDistanciaAoContorno(posEixo, nPerp, terreno);
-
-        // 2. Criar a Régua de Varredura exata
-        Ponto pEsq("", "", posEixo.x() - nPerp.x() * dEsq, posEixo.y() - nPerp.y() * dEsq);
-        Ponto pDir("", "", posEixo.x() + nPerp.x() * dDir, posEixo.y() + nPerp.y() * dDir);
-
-        // 3. Interseção com as ArestasTIN
-        for (const auto& aresta : terreno.arestas) {
-            auto inters = SegmentoHorizontal::interceptarRetaManual(pEsq, pDir, terreno.pontos[aresta.iIni], terreno.pontos[aresta.iFim]);
             for (const auto& pt : inters) {
-                double offset = (Eigen::Vector2d(pt.global.x(), pt.global.y()) - posEixo).dot(nPerp);
-                secao.terreno.emplace_back(offset, pt.cota, "TIN");
+                //  --RASTREIO--    .................................................
+                encontrados++;
+                // Log do primeiro acidente para validar valores
+                if(encontrados <= 5) {
+                    qDebug() << "Acidente" << encontrados << "-> Est:" << pt.estaca << "Z:" << pt.cota;
+                }
+                // GARANTIA: Inserção direta no mapa
+                perfilCompleto[pt.estaca] = std::make_pair(pt.cota, QString(""));
+                //  .................................................................
+                // Se a estaca já existe (é de projeto), mantemos o tipo,
+                // senão entra com tipo vazio ""
+                if (perfilCompleto.find(pt.estaca) == perfilCompleto.end()) {
+                    perfilCompleto[pt.estaca] = {pt.cota, ""};
+                } else {
+                    perfilCompleto[pt.estaca].first = pt.cota;
+                }
+            }
+            //  --RASTREIO--    .................................................
+            qDebug() << "Total de Acidentes mapeados:" << encontrados;
+            //  .................................................................
+        }
+    }
+
+    // C. Povoar os vetores finais e Corrigir Cotas Z
+    for (auto& [est, dados] : perfilCompleto) {
+        // Se a cota ainda estiver zerada (ponto de projeto), interpolamos na malha
+        if (dados.first == 0.0) {
+            dados.first = vertical.cotaNaEstaca(est);
+        }
+
+        PontoPerfil p(est, dados.first, dados.second);
+        vertical.pontos.push_back(p);
+
+        if (!dados.second.isEmpty()) {
+            vertical.pontosProjeto.push_back(p);
+        }
+    }
+}
+
+// 2. GERAÇÃO E SALVAMENTO DE SEÇÕES INDIVIDUAIS
+void Corredor::gerarArquivosSecoes(const Superficie& terreno, const QString& dirBase, const QString& raiz) {
+    for (const auto& pProj : vertical.pontosProjeto) {
+        SecaoTransversal secao(pProj.estaca);
+        Eigen::Vector2d pos = horizontal.getXYNaEstaca(pProj.estaca);
+        Eigen::Vector2d nPerp = horizontal.getPerpendicularNaEstaca(pProj.estaca);
+
+        // Limites pelo Contorno (Raycasting nos 101 pontos)
+        double dEsq = StorageProvider::calcularDistanciaAoContorno(pos, -nPerp, terreno);
+        double dDir = StorageProvider::calcularDistanciaAoContorno(pos, nPerp, terreno);
+
+        Ponto pEsq("", "", pos.x() - nPerp.x()*dEsq, pos.y() - nPerp.y()*dEsq);
+        Ponto pDir("", "", pos.x() + nPerp.x()*dDir, pos.y() + nPerp.y()*dDir);
+
+        for (const auto& ar : terreno.arestas) {
+            auto inters = SegmentoHorizontal::interceptarRetaManual(pEsq, pDir, terreno.pontos[ar.iIni], terreno.pontos[ar.iFim]);
+            for (const auto& pt : inters) {
+                double off = (Eigen::Vector2d(pt.global.x(), pt.global.y()) - pos).dot(nPerp);
+                secao.terreno.emplace_back(off, pt.cota, "TIN");
             }
         }
 
-        // 4. Ordenar (Esq -> Dir)
         std::sort(secao.terreno.begin(), secao.terreno.end(), [](const PontoSecao& a, const PontoSecao& b) {
             return a.offset < b.offset;
         });
 
-        // 5. EXPORTAR ARQUIVO INDIVIDUAL (Otimizado para Lisp)
-        // Nome: Projeto_SEC_00000.txt (formatado para facilitar busca no CAD)
-        QString nomeArquivo = dirBase + raiz + "_SEC_" + QString::number(pPerfil.estaca, 'f', 0).rightJustified(5, '0') + ".txt";
-
-        std::vector<std::map<QString, QString>> dadosSec;
-        for (const auto& pt : secao.terreno) {
-            std::map<QString, QString> linha;
-            linha["OFF"] = StorageProvider::formatarValor(pt.offset, 12);
-            linha["Z"]   = StorageProvider::formatarValor(pt.cota, 12);
-            dadosSec.push_back(linha);
-        }
-        std::vector<std::pair<QString, int>> lay = {{"OFF", 12}, {"Z", 12}};
-        StorageProvider::exportarFixo(nomeArquivo, dadosSec, lay);
+        // Exportação via StorageProvider
+        QString path = dirBase + raiz + "_S_" + QString("%1").arg((int)pProj.estaca, 5, 10, QChar('0')) + ".txt";
+        StorageProvider::exportarSecaoIndividual(path, pProj.estaca, secao.terreno);
     }
+}
+
+void Corredor::exportarPerfilIdentificado(const QString& caminho) {
+    std::vector<std::map<QString, QString>> dados;
+
+    for (const auto& p : vertical.pontos) {
+        std::map<QString, QString> linha;
+        linha["EST"]  = StorageProvider::formatarValor(p.estaca, 12);
+        linha["T_Z"]  = StorageProvider::formatarTexto("COTA_Z", 16);
+        linha["Z"]    = StorageProvider::formatarValor(p.cota, 12);
+        linha["T_ID"] = StorageProvider::formatarTexto("TIPO", 16);
+        linha["ID"]   = StorageProvider::formatarTexto(p.tipo, 12);
+        dados.push_back(linha);
+    }
+
+    // Layout padrão: 12 | 16 | 12 | 16 | 12
+    std::vector<std::pair<QString, int>> lay = {
+        {"EST", 12}, {"T_Z", 16}, {"Z", 12}, {"T_ID", 16}, {"ID", 12}
+    };
+
+    StorageProvider::exportarFixo(caminho, dados, lay);
 }

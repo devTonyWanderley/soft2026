@@ -4,12 +4,6 @@
 
 //  TipoElemento, DadosBrutos, SegmentoHorizontal, EixoHorizontal, PIV, PerfilLongitudinal e GreideProjeto
 
-enum class TipoElemento
-{
-    Reta,
-    Curva
-};
-
 struct DadosBrutos
 {
     Ponto p1;
@@ -33,7 +27,7 @@ struct SegmentoHorizontal
     SegmentoHorizontal(const Ponto& inicio, const Ponto& fim, double b, double estacaRef)
         : pIni(inicio), pFim(fim), bulge(b), estacaInicial(estacaRef)
     {
-        double corda = (pFim.pos() - pIni.pos()).head<2>().norm();
+        double corda = (pFim.pos2d() - pIni.pos2d()).norm();
         if (std::abs(bulge) < 1e-6)
         {
             tipo = TipoElemento::Reta;
@@ -91,16 +85,6 @@ struct PIV
     double cota;
     double k;
     double comprimentoCurva;
-};
-
-struct PerfilLongitudinal
-{
-    Camada tipo;
-    std::vector<PontoPerfil> pontos;
-    double cotaMinima;
-    double cotaMaxima;
-    double extensaoTotal;
-    double cotaNaEstaca(double s) const;
 };
 
 struct GreideProjeto : public PerfilLongitudinal

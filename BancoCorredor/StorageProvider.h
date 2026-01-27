@@ -20,6 +20,9 @@ public:
     static std::vector<DadosBrutos> lerEixo(const QString& path, const FileLayout& layout);
     static void lerArestas(const QString& path, Superficie& superf);
 
+    // ADICIONE ESTA LINHA:
+    static bool exportarSecaoIndividual(const QString& path, double estaca, const std::vector<PontoSecao>& pontos);
+
     static QString formatarValor(double val, int largura);
     static QString formatarTexto(QString txt, int largura);
 

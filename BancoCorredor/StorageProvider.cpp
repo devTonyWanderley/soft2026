@@ -72,23 +72,35 @@ void StorageProvider::lerArestas(const QString& path, Superficie& superf) {
     QFile arquivo(QDir::cleanPath(path));
     if (!arquivo.open(QIODevice::ReadOnly | QIODevice::Text)) return;
 
-    // Mapa temporário para tradução ID -> Índice (Estratégia "Carrega e Esquece")
+    // 1. Criar o Mapa de IDs (Trimmed para segurança)
+    // Converte o nome do ponto (string) no índice (inteiro) do vetor
     std::map<QString, int> mapaIds;
     for (int i = 0; i < (int)superf.pontos.size(); ++i) {
-        mapaIds[superf.pontos[i].nome] = i;
+        mapaIds[superf.pontos[i].nome.trimmed()] = i;
     }
 
     QTextStream in(&arquivo);
+    int contagemSucesso = 0;
     while (!in.atEnd()) {
         QString linha = in.readLine().trimmed();
+        if (linha.isEmpty()) continue;
+
+        // Suporta espaços, tabulações ou múltiplos espaços
         QStringList ids = linha.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
 
         if (ids.size() >= 2) {
-            if (mapaIds.count(ids[0]) && mapaIds.count(ids[1])) {
-                superf.arestas.emplace_back(mapaIds[ids[0]], mapaIds[ids[1]]);
+            QString id1 = ids[0].trimmed();
+            QString id2 = ids[1].trimmed();
+
+            if (mapaIds.count(id1) && mapaIds.count(id2)) {
+                superf.arestas.emplace_back(mapaIds[id1], mapaIds[id2]);
+                contagemSucesso++;
             }
         }
     }
+    arquivo.close();
+    // Use o qDebug para validar se a malha foi montada
+    qDebug() << "Malha montada com" << contagemSucesso << "arestas vinculadas.";
 }
 
 // Exportador Parametrizado (Décimos de Milímetro)
@@ -137,8 +149,8 @@ double StorageProvider::calcularDistanciaAoContorno(const Eigen::Vector2d& orige
         int idx1 = terreno.indicesContorno[i];
         int idx2 = terreno.indicesContorno[(i + 1) % terreno.indicesContorno.size()];
 
-        Eigen::Vector2d p1 = terreno.pontos[idx1].pos().head<2>();
-        Eigen::Vector2d p2 = terreno.pontos[idx2].pos().head<2>();
+        Eigen::Vector2d p1 = terreno.pontos[idx1].pos2d();
+        Eigen::Vector2d p2 = terreno.pontos[idx2].pos2d();
         Eigen::Vector2d vCont = p2 - p1;
 
         // Cramer: origem + t*direcao = p1 + u*vCont
@@ -161,4 +173,24 @@ double StorageProvider::calcularDistanciaAoContorno(const Eigen::Vector2d& orige
 
     // Se não atingiu o contorno (ponto fora?), retorna 50m como segurança
     return atingiu ? menorT : 50.0;
+}
+
+bool StorageProvider::exportarSecaoIndividual(const QString& path, double estaca, const std::vector<PontoSecao>& pontos) {
+    std::vector<std::map<QString, QString>> dados;
+
+    // Cabeçalho da Seção (Primeira Linha)
+    std::map<QString, QString> cabecalho;
+    cabecalho["C1"] = formatarTexto("SEC_ESTACA", 16);
+    cabecalho["C2"] = formatarValor(estaca, 12);
+    dados.push_back(cabecalho);
+
+    // Corpo da Seção (Pontos Offset/Cota)
+    for (const auto& pt : pontos) {
+        std::map<QString, QString> linha;
+        linha["C1"] = formatarValor(pt.offset, 16);
+        linha["C2"] = formatarValor(pt.cota, 12);
+        dados.push_back(linha);
+    }
+
+    return exportarFixo(path, dados, {{"C1", 16}, {"C2", 12}});
 }
