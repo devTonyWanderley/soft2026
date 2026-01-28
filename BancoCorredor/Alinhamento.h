@@ -4,6 +4,7 @@
 
 //  TipoElemento, DadosBrutos, SegmentoHorizontal, EixoHorizontal, PIV, PerfilLongitudinal e GreideProjeto
 
+/*
 struct DadosBrutos
 {
     Ponto p1;
@@ -11,6 +12,7 @@ struct DadosBrutos
     double bulge;
     DadosBrutos(const Ponto& ini = Ponto(), const Ponto& fim = Ponto(), double b = 0.0): p1(ini), p2(fim), bulge(b) {}
 };
+*/
 
 struct SegmentoHorizontal
 {

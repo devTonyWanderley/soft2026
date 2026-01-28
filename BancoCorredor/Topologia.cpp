@@ -204,3 +204,76 @@ void Superficie::reconstruirFaces()
         n = 0;
     }
 }
+
+double Superficie::obterZ(double x, double y) {
+    Eigen::Vector2d p(x, y);
+
+    for (const auto& f : faces) {
+        Eigen::Vector2d v0 = pontos[f.v[0]].pos2d();
+        Eigen::Vector2d v1 = pontos[f.v[1]].pos2d();
+        Eigen::Vector2d v2 = pontos[f.v[2]].pos2d();
+
+        // Cálculo de coordenadas baricêntricas
+        Eigen::Vector2d v10 = v1 - v0;
+        Eigen::Vector2d v20 = v2 - v0;
+        Eigen::Vector2d vp0 = p - v0;
+
+        double d00 = v10.dot(v10);
+        double d01 = v10.dot(v20);
+        double d11 = v20.dot(v20);
+        double d20 = vp0.dot(v10);
+        double d21 = vp0.dot(v20);
+        double denom = d00 * d11 - d01 * d01;
+
+        if (std::abs(denom) < 1e-9) continue;
+
+        double v = (d11 * d20 - d01 * d21) / denom;
+        double w = (d00 * d21 - d01 * d20) / denom;
+        double u = 1.0 - v - w;
+
+        // Se u, v, w estão entre 0 e 1, o ponto está dentro do triângulo
+        if (u >= -0.001 && v >= -0.001 && w >= -0.001) {
+            return u * pontos[f.v[0]].z + v * pontos[f.v[1]].z + w * pontos[f.v[2]].z;
+        }
+    }
+    return -999.0; // Ponto fora da TIN
+}
+
+void Superficie::processarProjeto(const std::vector<DadosBrutos>& eixo) {
+    double estacaAcumulada = 0;
+
+    for (const auto& seg : eixo) {
+        // Vetor direção do segmento do eixo
+        Eigen::Vector2d pIni = seg.p1.pos2d();
+        Eigen::Vector2d pFim = seg.p2.pos2d();
+        Eigen::Vector2d dir = (pFim - pIni).normalized();
+        Eigen::Vector2d perp(-dir.y(), dir.x()); // Perpendicular à esquerda
+
+        // 1. Calcular Cota no Eixo (Offset 0)
+        double zEixo = obterZ(pIni.x(), pIni.y());
+
+        // 2. Gerar Seção (Exemplo: pontos a cada 2 metros até o contorno)
+        std::vector<PontoSecao> pontosSecao;
+
+        // Espiões de limite lateral (contorno)
+        double distEsq = StorageProvider::calcularDistanciaAoContorno(pIni, perp, *this);
+        double distDir = StorageProvider::calcularDistanciaAoContorno(pIni, -perp, *this);
+
+        // Lado Esquerdo (Offsets negativos)
+        for (double d = 0; d <= distEsq; d += 2.0) {
+            Eigen::Vector2d pos = pIni + (perp * d);
+            pontosSecao.push_back({ -d, obterZ(pos.x(), pos.y()) });
+        }
+        // Lado Direito (Offsets positivos)
+        for (double d = 2.0; d <= distDir; d += 2.0) {
+            Eigen::Vector2d pos = pIni - (perp * d);
+            pontosSecao.push_back({ d, obterZ(pos.x(), pos.y()) });
+        }
+
+        // 3. Exportar usando seu StorageProvider
+        QString nomeArq = QString("Secao_Estaca_%1.txt").arg(estacaAcumulada);
+        StorageProvider::exportarSecaoIndividual(nomeArq, estacaAcumulada, pontosSecao);
+
+        estacaAcumulada += (pFim - pIni).norm();
+    }
+}

@@ -3,6 +3,14 @@
 #include <map>
 #include <list>
 
+struct DadosBrutos
+{
+    Ponto p1;
+    Ponto p2;
+    double bulge;
+    DadosBrutos(const Ponto& ini = Ponto(), const Ponto& fim = Ponto(), double b = 0.0): p1(ini), p2(fim), bulge(b) {}
+};
+
 struct ArestaTIN {
     int iIni, iFim; // Índices no vetor de pontos (mais rápido que IDs de texto)
     ArestaTIN(int p0 = -1, int p1 = -1) : iIni(p0), iFim(p1) {}
@@ -24,6 +32,9 @@ struct Superficie {
     void reconstruirFaces();
 
     void gerarContornoSequencial();
+
+    double obterZ(double x, double y);
+    void processarProjeto(const std::vector<DadosBrutos>& eixo);
 
     // Função vital para o Perfil: Interpolação Z em uma aresta
     double interpolarZ(int i1, int i2, double x, double y) const;
